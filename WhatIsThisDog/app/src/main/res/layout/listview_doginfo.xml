@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center|top"
+    android:foregroundGravity="center"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="300dp"
+        android:layout_height="238dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#CDE4CBCB"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+
+            <LinearLayout
+                android:layout_width="291dp"
+                android:layout_height="match_parent"
+                android:layout_weight="9"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="10">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_weight="0.5" />
+
+                <ImageView
+                    android:id="@+id/dogImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_weight="7"
+                    android:adjustViewBounds="true"
+                    android:background="#8ACF9393" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="1dp"
+                    android:layout_weight="2"
+                    android:gravity="center"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/txt_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="New Text"
+                        android:textColor="#000000"
+                        android:textSize="24dp" />
+
+                    <TextView
+                        android:id="@+id/txt_desc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8.5"
+                        android:gravity="center"
+                        android:text="New Text"
+                        android:textColor="#666666"
+                        android:textSize="16dp" />
+
+                    <Button
+                        android:id="@+id/b_delete"
+                        android:layout_width="30dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5"
+                        android:background="@android:drawable/ic_menu_delete"
+                        android:gravity="center"
+                        android:text="del" />
+                </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="15dp"
+                    android:layout_weight="0.5" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
