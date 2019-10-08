@@ -1,13 +1,7 @@
 package kr.ac.mju.capston.whatisthisdog;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+import android.content.Context;
 import android.os.Environment;
-import android.util.Log;
-
-import androidx.core.content.ContextCompat;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,14 +9,19 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class FileManager {
 
     private static final File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/WhatIsThisDog");
     private File file;
+    private Context context;
 
-    public FileManager(){}
-    public FileManager(String fileName){
+    public FileManager(Context context){
+        this.context = context;
+    }
+    public FileManager(Context context, String fileName){
+        this.context = context;
         setFile(fileName);
     }
 
@@ -37,7 +36,6 @@ public class FileManager {
 
     //파일에 쓰기
     public void saveItemsToFile(String str) {
-
         FileWriter fw = null ;
         BufferedWriter bufwr = null ;
 
@@ -55,14 +53,6 @@ public class FileManager {
             //임시 작성
             bufwr.write(str);
             bufwr.newLine();
-
-            /*
-            for (String str : items) {
-                bufwr.write(str) ;
-                bufwr.newLine() ;
-            }
-            */
-
             bufwr.flush() ;
 
         } catch (Exception e) {
@@ -117,5 +107,82 @@ public class FileManager {
         }
 
         return resultList;
+    }
+
+    //카테고리 저장 : [카테고리이름]#[선택여부]
+    public void saveCategory(HashMap<String,Boolean> categorylist){
+        FileWriter fw = null ;
+        BufferedWriter bufwr = null ;
+
+        try {
+            // open file.
+            fw = new FileWriter(file,false);
+            bufwr = new BufferedWriter(fw) ;
+
+            for(String key : categorylist.keySet()){
+                bufwr.write(key + "#" + String.valueOf(categorylist.get(key)));
+                bufwr.newLine();
+            }
+            bufwr.flush() ;
+
+        } catch (Exception e) {
+            e.printStackTrace() ;
+        }
+
+        try {
+            // close file.
+            if (bufwr != null) {
+                bufwr.close();
+            }
+
+            if (fw != null) {
+                fw.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace() ;
+        }
+    }
+
+    //카테고리 불러오기
+    public HashMap<String, Boolean> loadCategory(){
+        FileReader fr = null ;
+        BufferedReader bufrd = null ;
+        String str;
+        HashMap<String, Boolean> categoryList = new HashMap<>();
+
+        //첫 실행 - category.txt 없는 경우
+        if(!file.exists()){
+            for(int i=1;i<8;i++) {  //카테고리 갯수만큼
+                //categoryList를 카테고리,false로 채움 (카테고리 이름 string.xml 저장 및 변경)
+                int categoryID = context.getResources().getIdentifier( "category" + String.valueOf(i), "string", context.getPackageName());
+                categoryList.put(context.getString(categoryID), false);
+            }
+            saveCategory(categoryList);
+
+            return categoryList;
+        }
+
+        try {
+            // open file.
+            fr = new FileReader(file) ;
+            bufrd = new BufferedReader(fr) ;
+
+            while ((str = bufrd.readLine()) != null) {
+                //가져온 데이터 파싱
+                String[] array = str.split("#");
+                String category = array[0];
+                String check = array[1];
+
+                //리스트에 추가
+                categoryList.put(category, Boolean.valueOf(check));
+            }
+
+            bufrd.close() ;
+            fr.close() ;
+        } catch (Exception e) {
+            e.printStackTrace() ;
+        }
+
+        return categoryList;
     }
 }

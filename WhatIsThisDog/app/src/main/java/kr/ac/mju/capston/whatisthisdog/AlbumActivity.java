@@ -72,7 +72,7 @@ public class AlbumActivity extends AppCompatActivity {
         });
 
         //새로고침 (수정필요)
-        fm = new FileManager("album.txt");
+        fm = new FileManager(this,"album.txt");
         b_refresh = findViewById(R.id.b_refresh);
         b_refresh.setOnClickListener(new View.OnClickListener() {
             @Override

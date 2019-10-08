@@ -30,6 +30,7 @@ public class DogInfoActivity extends AppCompatActivity {
         name = findViewById(R.id.info_name);
         desc = findViewById(R.id.info_desc);
 
+        //경로로 이미지 불러오기, 사전에서 호출시 변경해야함 (예정)
         String photoPath = FileManager.getPath() + "/" + item.getDogImage();
         Glide.with(this)
                 .load(photoPath)

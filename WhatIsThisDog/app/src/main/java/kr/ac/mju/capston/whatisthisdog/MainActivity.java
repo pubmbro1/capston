@@ -20,11 +20,13 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private static final int ALBUM_LIST_SEND = 1004;
+    private static final int CATEGORY_LIST_SEND = 1005;
 
     private DataSet dataSet;
 
@@ -85,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.b_category :
                         intent = new Intent(MainActivity.this, CategoryActivity.class);
-                        startActivity(intent);
+                        intent.putExtra("categorylist",dataSet.getCategorylist());
+                        startActivityForResult(intent, CATEGORY_LIST_SEND);
                         break;
                 }
 
@@ -108,14 +111,14 @@ public class MainActivity extends AppCompatActivity {
             Log.d("dir create" , "fail");
         }
 
-        dataSet = new DataSet();
+        dataSet = new DataSet(this);
     }
 
 
     /* 권한 처리 */
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-                if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
+        if (grantResults.length >0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED){
             Log.d(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
         }
         else{
@@ -135,10 +138,12 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(this,"앨범 업데이트 필요없음",Toast.LENGTH_LONG).show();
                 }else{
                     Toast.makeText(this,"앨범 업데이트 필요",Toast.LENGTH_LONG).show();
-
                     dataSet.setAlbumlist((ArrayList<DogInfo>)returnIntent.getSerializableExtra("albumlist"));
                     //데이터 업데이트 코드 추가
                 }
+                break;
+            case CATEGORY_LIST_SEND:
+                dataSet.setCategorylist((HashMap<String,Boolean>)returnIntent.getSerializableExtra("categorylist"));
                 break;
         }
     }

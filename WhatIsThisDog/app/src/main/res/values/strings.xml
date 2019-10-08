@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">WhatIsThisDog</string>
+    <string name="category1">임시 카테고리1</string>
+    <string name="category2">임시 카테고리2</string>
+    <string name="category3">임시 카테고리3</string>
+    <string name="category4">임시 카테고리4</string>
+    <string name="category5">임시 카테고리5</string>
+    <string name="category6">임시 카테고리6</string>
+    <string name="category7">임시 카테고리7</string>
 </resources>

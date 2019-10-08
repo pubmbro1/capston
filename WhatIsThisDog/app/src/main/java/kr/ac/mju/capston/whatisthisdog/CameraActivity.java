@@ -198,7 +198,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         }
 
 
-        fm = new FileManager("album.txt");
+        fm = new FileManager(this,"album.txt");
 
         // 텍스트 파일에 정보 저장
         String testStr = fileName +  "#"
