@@ -1,3 +1,7 @@
+/*
+* 찍은 후 넘어가는 부분 미구현
+* */
+
 package kr.ac.mju.capston.whatisthisdog;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,6 +49,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
     private Button button;
 
+    private FileManager fm;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -61,12 +66,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
             public void onClick(View view) {
                 if(mCamera != null)
                 mCamera.takePicture(null,null,takePicture);
-
-                /*
-                Intent intent = new Intent(CameraActivity.this, AlbumActivity.class);
-                startActivity(intent);
-                finish();
-                */
             }
         });
 
@@ -82,7 +81,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
                 if(data != null){
                     try {
                         saveImage(data, camera);
-
                         Toast.makeText(CameraActivity.this, "저장 완료", Toast.LENGTH_SHORT).show();
 
                     }catch(Exception e){
@@ -155,7 +153,6 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         }
     }
 
-
     public void saveImage(byte[] data, Camera camera){
 
         //이미지의 너비와 높이 결정
@@ -177,24 +174,17 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
 
         //파일로 저장
         FileOutputStream outStream = null;
+        String fileName = null;
 
         try {
             int nameIndex = 0;
-            String fileName = String.format("%s.jpg", "usersPicture" + String.valueOf(nameIndex++));
+            fileName = String.format("%s.jpg", System.currentTimeMillis());
             File outputFile = new File(FileManager.getPath(), fileName);
-
-            while (outputFile.exists()){
-                fileName = String.format("%s.jpg", "usersPicture" + String.valueOf(nameIndex++));
-                outputFile = new File(FileManager.getPath(), fileName);
-                Log.d("파일명 존재", "파일명 수정 - " + fileName );
-            }
 
             outStream = new FileOutputStream(outputFile);
             outStream.write(currentData);
             outStream.flush();
             outStream.close();
-
-            mCamera.startPreview();
 
             // 갤러리에 반영
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -206,6 +196,25 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
+        fm = new FileManager("album.txt");
+
+        // 텍스트 파일에 정보 저장
+        String testStr = fileName +  "#"
+                + "Dog Name" + "#"
+                + "info" + fileName ;
+
+        Log.d("파일 쓰기" , testStr);
+        fm.saveItemsToFile(testStr) ;
+
+
+        //앨범으로 이동
+        //Intent intent = new Intent(CameraActivity.this, AlbumActivity.class);
+        //startActivity(intent);
+
+        finish();
+
     }
 
 }

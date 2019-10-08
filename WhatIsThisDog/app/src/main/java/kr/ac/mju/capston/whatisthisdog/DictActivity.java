@@ -23,13 +23,14 @@ public class DictActivity extends AppCompatActivity {
 
 
         //테스트 데이터 입력
-        adapter_Dict.addItem(ContextCompat.getDrawable(this,R.drawable.test_puppy_icon),
+
+        adapter_Dict.addItem("R.drawable.test_puppy_icon",
                 "dog1", "dog1 info");
-        adapter_Dict.addItem(ContextCompat.getDrawable(this,R.drawable.test_puppy_icon),
+        adapter_Dict.addItem("R.drawable.test_puppy_icon",
                 "dog2", "dog2 info");
-        adapter_Dict.addItem(ContextCompat.getDrawable(this,R.drawable.test_puppy_icon),
+        adapter_Dict.addItem("R.drawable.test_puppy_icon",
                 "dog3", "dog3 info");
-        adapter_Dict.addItem(ContextCompat.getDrawable(this,R.drawable.test_puppy_icon),
+        adapter_Dict.addItem("R.drawable.test_puppy_icon",
                 "dog4", "dog4 info");
 
 

@@ -1,5 +1,5 @@
 /*  (1.0)   - 10/06 : 카메라 캡쳐 후 이미지 저장, 강아지 정보 class 및 리스트뷰 UI 구현
-*           - 10/07 : 파일 정보 txt 저장
+*           - 10/08 : 파일 정보 txt 저장, 이미지 로드 glide 라이브러리 포함
 * */
 package kr.ac.mju.capston.whatisthisdog;
 
@@ -19,10 +19,14 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.File;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
+    private static final int ALBUM_LIST_SEND = 1004;
+
+    private DataSet dataSet;
 
     private Button b_camera;
     private Button b_matching;
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        loadData();
         init();
     }
 
@@ -59,25 +64,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //Change Activity
-                Intent intent = new Intent();
+                Intent intent;
                 switch(view.getId()){
                     case R.id.b_camera :
                         intent = new Intent(MainActivity.this, CameraActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.b_matching :
                         intent = new Intent(MainActivity.this, MatchingActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.b_dictionary :
                         intent = new Intent(MainActivity.this, DictActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.b_album :
                         intent = new Intent(MainActivity.this, AlbumActivity.class);
+                        intent.putExtra("albumlist",dataSet.getAlbumlist());
+                        startActivityForResult(intent, ALBUM_LIST_SEND);
                         break;
                     case R.id.b_category :
                         intent = new Intent(MainActivity.this, CategoryActivity.class);
+                        startActivity(intent);
                         break;
                 }
-                startActivity(intent);
+
             }
         };
 
@@ -87,11 +98,17 @@ public class MainActivity extends AppCompatActivity {
         b_album.setOnClickListener(onClickListener);
         b_category.setOnClickListener(onClickListener);
 
+
+
+    }
+
+    private void loadData(){
         //이개뭐개 디렉토리 생성
-        FileManager fm = new FileManager();
-        if(!fm.getPath().mkdir()){
+        if(!FileManager.getPath().mkdir()){
             Log.d("dir create" , "fail");
         }
+
+        dataSet = new DataSet();
     }
 
 
@@ -104,6 +121,25 @@ public class MainActivity extends AppCompatActivity {
         else{
             Toast.makeText(this,"강아지 촬영 및 저장을 위해 권한이 필요합니다",Toast.LENGTH_LONG).show();
             finish();
+        }
+    }
+
+    /* 액티비티 반환 처리 */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent returnIntent) {
+        super.onActivityResult(requestCode, resultCode, returnIntent);
+        Log.e("Main Activity", "onActivityResult : " + resultCode);
+        switch (requestCode){
+            case ALBUM_LIST_SEND: // 앨범 액티비티로 보냈던 요청
+                if (resultCode == RESULT_OK) { // 결과가 OK = 필요없음
+                    Toast.makeText(this,"앨범 업데이트 필요없음",Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(this,"앨범 업데이트 필요",Toast.LENGTH_LONG).show();
+
+                    dataSet.setAlbumlist((ArrayList<DogInfo>)returnIntent.getSerializableExtra("albumlist"));
+                    //데이터 업데이트 코드 추가
+                }
+                break;
         }
     }
 }

@@ -8,12 +8,6 @@
     tools:context=".AlbumActivity">
 
     <Button
-        android:id="@+id/b_add"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="add" />
-
-    <Button
         android:id="@+id/b_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

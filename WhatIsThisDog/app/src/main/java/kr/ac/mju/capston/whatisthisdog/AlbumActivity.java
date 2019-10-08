@@ -3,6 +3,7 @@ package kr.ac.mju.capston.whatisthisdog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +21,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,11 +29,11 @@ public class AlbumActivity extends AppCompatActivity {
 
     private ListView listView;
     private ListViewAdapter adapter_myAlbum;
+    private ArrayList<DogInfo> albumlist;
 
-    private Button b_add;
+    private int UPDATE_CODE = RESULT_OK; //메인으로 반환할 업데이트 코드, OK = 업데이트 필요없음
+
     private Button b_refresh;
-
-    private int temporaryNum = 0;
 
     private FileManager fm;
 
@@ -40,61 +42,50 @@ public class AlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
 
+        init();
+    }
+
+    private void init(){
+        //메인에서 list 받는 intent
+        Intent intent = getIntent();
+        albumlist = (ArrayList<DogInfo>) intent.getSerializableExtra("albumlist");
+        setResult(UPDATE_CODE);
+
         adapter_myAlbum = new ListViewAdapter();
         listView = (ListView) findViewById(R.id.albumlistView);
         listView.setAdapter(adapter_myAlbum);
 
-        fm = new FileManager();
-        fm.setFile("dogInfo.txt");
+        //인텐트로 받은 정보 연결
+        adapter_myAlbum.setList(albumlist);
 
-        b_add = findViewById(R.id.b_add);
-        b_refresh = findViewById(R.id.b_refresh);
-
-        //불러오기
-        Iterator it = fm.loadItemsFromFile().iterator();
-        while(it.hasNext()){
-            adapter_myAlbum.addItem(ContextCompat.getDrawable(AlbumActivity.this, R.drawable.test_puppy_icon),
-                    "dog" + String.valueOf(++temporaryNum), (String)it.next());
-        }
-
-        //앨범 강아지 추가
-        b_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String testStr = "test dog info" + String.valueOf(++temporaryNum);
-
-                fm.saveItemsToFile(testStr) ;
-                adapter_myAlbum.addItem(ContextCompat.getDrawable(AlbumActivity.this,R.drawable.test_puppy_icon),
-                        "dog" + String.valueOf(temporaryNum), testStr);
-            }
-        });
-        b_refresh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                adapter_myAlbum.notifyDataSetChanged();
-            }
-        });
-
-
-        /*
         //리스트 클릭 이벤트 처리 (차후 구현)
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
                 DogInfo item = (DogInfo) parent.getItemAtPosition(position) ;
 
-                String titleStr = item.getName() ;
-                String descStr = item.getDesc() ;
-                Drawable iconDrawable = item.getDogImage() ;
-
-                // TODO : use item data.
+                Intent intent = new Intent(AlbumActivity.this, DogInfoActivity.class);
+                intent.putExtra("dogitem" , item);
+                startActivity(intent);
             }
-        }) ;
-        */
+        });
 
+        //새로고침 (수정필요)
+        fm = new FileManager("album.txt");
+        b_refresh = findViewById(R.id.b_refresh);
+        b_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                adapter_myAlbum.setList(fm.loadItemsFromFile());
+                adapter_myAlbum.notifyDataSetChanged();
 
+                //새로고침
+                UPDATE_CODE = RESULT_CANCELED;
+                Intent intent = new Intent();
+                intent.putExtra("albumlist", adapter_myAlbum.getDogInfoList());
+                setResult(UPDATE_CODE, intent);
+            }
+        });
     }
-
 }
