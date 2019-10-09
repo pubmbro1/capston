@@ -1,22 +1,19 @@
-package kr.ac.mju.capston.whatisthisdog;
+package kr.ac.mju.capston.whatisthisdog.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
 
-public class LoadingActivity extends AppCompatActivity {
+import kr.ac.mju.capston.whatisthisdog.R;
+
+public class LoadingActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initActionBar(false);
         setContentView(R.layout.activity_loading);
 
         Handler handler = new Handler();

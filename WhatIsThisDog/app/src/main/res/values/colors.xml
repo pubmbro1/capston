@@ -3,4 +3,28 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="categoryPink">#C9FFDCDC</color>
+
+    <color name="mainColor">#f4dfcc</color>
+    <color name="puppyBrown">#736357</color>
+    <color name="boneYellow">#f5db9e</color>
+
+    <color name="mainTextColor">#736357</color>
+
+
+
+    <color name="actionButton">#bbbbbb</color>
+    <color name="windowBackground">#fafafa</color>
+    <color name="textLight">#dddddd</color>
+    <color name="textMedium">#999999</color>
+    <color name="textColor">#000000</color>
+    <color name="divider">#ffffff</color>
+
+    <color name="tabTextDefault">#AAFFFFFF</color>
+    <color name="tabTextSelected">#fff</color>
+
+    <color name="headerBackground">#eeeeee</color>
+
+    <color name="selectedItemBackground">#aaaaaa</color>
 </resources>

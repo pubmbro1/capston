@@ -1,34 +1,29 @@
-/*  (1.0)   - 10/06 : 카메라 캡쳐 후 이미지 저장, 강아지 정보 class 및 리스트뷰 UI 구현
-*           - 10/08 : 파일 정보 txt 저장, 이미지 로드 glide 라이브러리 포함
+/*  (1.1)   - 10.09 : 사전 구현
+*
 * */
-package kr.ac.mju.capston.whatisthisdog;
+package kr.ac.mju.capston.whatisthisdog.Activity;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
+import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
+import kr.ac.mju.capston.whatisthisdog.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
-    private static final int ALBUM_LIST_SEND = 1004;
-    private static final int CATEGORY_LIST_SEND = 1005;
-
-    private DataSet dataSet;
 
     private Button b_camera;
     private Button b_matching;
@@ -39,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initActionBar(false);
         setContentView(R.layout.activity_main);
 
-        //버전에 따라 권한 체크
+        //버전 권한 체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ) {
             } else {
@@ -49,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        loadData();
         init();
     }
 
@@ -82,13 +77,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.b_album :
                         intent = new Intent(MainActivity.this, AlbumActivity.class);
-                        intent.putExtra("albumlist",dataSet.getAlbumlist());
-                        startActivityForResult(intent, ALBUM_LIST_SEND);
+                        startActivity(intent);
                         break;
                     case R.id.b_category :
                         intent = new Intent(MainActivity.this, CategoryActivity.class);
-                        intent.putExtra("categorylist",dataSet.getCategorylist());
-                        startActivityForResult(intent, CATEGORY_LIST_SEND);
+                        startActivity(intent);
                         break;
                 }
 
@@ -101,17 +94,11 @@ public class MainActivity extends AppCompatActivity {
         b_album.setOnClickListener(onClickListener);
         b_category.setOnClickListener(onClickListener);
 
-
-
-    }
-
-    private void loadData(){
-        //이개뭐개 디렉토리 생성
         if(!FileManager.getPath().mkdir()){
             Log.d("dir create" , "fail");
         }
 
-        dataSet = new DataSet(this);
+
     }
 
 
@@ -127,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    /* 액티비티 반환 처리 */
+    /* 액티비티 반환 처리
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent returnIntent) {
         super.onActivityResult(requestCode, resultCode, returnIntent);
@@ -135,11 +122,9 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode){
             case ALBUM_LIST_SEND: // 앨범 액티비티로 보냈던 요청
                 if (resultCode == RESULT_OK) { // 결과가 OK = 필요없음
-                    Toast.makeText(this,"앨범 업데이트 필요없음",Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(this,"앨범 업데이트 필요",Toast.LENGTH_LONG).show();
                     dataSet.setAlbumlist((ArrayList<DogInfo>)returnIntent.getSerializableExtra("albumlist"));
-                    //데이터 업데이트 코드 추가
+                    //삭제시 데이터 업데이트 코드 추가
                 }
                 break;
             case CATEGORY_LIST_SEND:
@@ -147,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+     */
 }
 
 

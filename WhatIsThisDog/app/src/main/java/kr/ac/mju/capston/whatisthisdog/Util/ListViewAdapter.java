@@ -1,12 +1,6 @@
-package kr.ac.mju.capston.whatisthisdog;
+package kr.ac.mju.capston.whatisthisdog.Util;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+
+import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
+import kr.ac.mju.capston.whatisthisdog.R;
 
 public class ListViewAdapter extends BaseAdapter {
     // 강아지 정보 리스트
@@ -78,6 +73,7 @@ public class ListViewAdapter extends BaseAdapter {
 
             Glide.with(context)
                     .load(photoPath)
+                    .error(R.drawable.test_puppy_icon)
                     .into(viewHolder.iconImageView);
         }
         viewHolder.titleTextView.setText(item.getName());
@@ -97,14 +93,15 @@ public class ListViewAdapter extends BaseAdapter {
         return dogInfoList.get(position) ;
     }
 
-    public void addItem(String icon, String name, String desc) {
-        DogInfo item = new DogInfo();
+    public void removeItem(DogInfo item) {
+        /*
 
-        item.setDogImage(icon);
-        item.setName(name);
-        item.setDesc(desc);
+        삭제 코드 추가
+         */
+        dogInfoList.remove(item);
 
-        dogInfoList.add(item);
+
+
     }
 
     public class ViewHolder{

@@ -2,28 +2,16 @@
 * 찍은 후 넘어가는 부분 미구현
 * */
 
-package kr.ac.mju.capston.whatisthisdog;
+package kr.ac.mju.capston.whatisthisdog.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.net.Uri;
-import android.nfc.Tag;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,10 +24,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.List;
 
-public class CameraActivity extends AppCompatActivity implements SurfaceHolder.Callback{
+import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
+import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
+import kr.ac.mju.capston.whatisthisdog.R;
+
+public class CameraActivity extends BaseActivity implements SurfaceHolder.Callback{
 
     private SurfaceView mCameraView;
     private SurfaceHolder mCameraHolder;
@@ -54,6 +45,7 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initActionBar(false);
         setContentView(R.layout.activity_camera);
 
         mCameraView = (SurfaceView) findViewById(R.id.surfaceView);
@@ -198,23 +190,17 @@ public class CameraActivity extends AppCompatActivity implements SurfaceHolder.C
         }
 
 
-        fm = new FileManager(this,"album.txt");
+
 
         // 텍스트 파일에 정보 저장
-        String testStr = fileName +  "#"
-                + "Dog Name" + "#"
-                + "info" + fileName ;
-
-        Log.d("파일 쓰기" , testStr);
-        fm.saveItemsToFile(testStr) ;
+        fm = new FileManager(this,"album.txt");
+        DogInfo saveItem = new DogInfo(fileName, "DogName", "info" + fileName);
+        fm.saveItemsToFile(saveItem, false) ;
 
 
         //앨범으로 이동
         //Intent intent = new Intent(CameraActivity.this, AlbumActivity.class);
         //startActivity(intent);
-
         finish();
-
     }
-
 }

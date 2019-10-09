@@ -5,17 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AlbumActivity">
+    tools:context=".Activity.AlbumActivity">
 
-    <Button
-        android:id="@+id/b_refresh"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipelayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="refresh" />
+        android:layout_height="wrap_content">
 
-    <ListView
-        android:id="@+id/albumlistView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        <ListView
+            android:id="@+id/albumlistView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/divider"
+            android:dividerHeight="0dp"
+            />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </LinearLayout>

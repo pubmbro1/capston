@@ -12,20 +12,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DogInfoActivity"></activity>
-        <activity android:name=".LoadingActivity">
+        <activity android:name=".Activity.BaseActivity"></activity>
+        <activity android:name=".Activity.DogInfoActivity" />
+        <activity android:name=".Activity.LoadingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".AlbumActivity" />
-        <activity android:name=".DictActivity" />
-        <activity android:name=".MatchingActivity" />
-        <activity android:name=".CameraActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".Activity.CategoryActivity" />
+        <activity android:name=".Activity.AlbumActivity" />
+        <activity android:name=".Activity.DictActivity" />
+        <activity android:name=".Activity.MatchingActivity" />
+        <activity android:name=".Activity.CameraActivity" />
+        <activity android:name=".Activity.MainActivity" />
     </application>
 
 </manifest>

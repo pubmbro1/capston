@@ -1,30 +1,36 @@
-package kr.ac.mju.capston.whatisthisdog;
+package kr.ac.mju.capston.whatisthisdog.Activity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.CheckBox;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.TextView;
-
 import java.util.HashMap;
 
-public class CategoryActivity extends AppCompatActivity {
+import kr.ac.mju.capston.whatisthisdog.R;
+import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
+
+public class CategoryActivity extends BaseActivity {
 
     private HashMap<String, Boolean> categoryList;
     private CheckBox checkBox;
 
+    private FileManager fm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        initActionBar(true);
         setContentView(R.layout.activity_category);
 
-        //메인에서 카테고리 리스트 받음
-        Intent intent = getIntent();
-        categoryList = (HashMap<String, Boolean>)  intent.getExtras().getSerializable("categorylist");;
+        fm = new FileManager(this, "category.txt");
+
+        if(savedInstanceState != null)
+            categoryList = (HashMap<String, Boolean>) savedInstanceState.getSerializable("categorylist");
+        else
+            categoryList = fm.loadCategory();
 
         //카테고리 클릭시 이벤트 처리
         View.OnClickListener categoryClickListener = new View.OnClickListener() {
@@ -34,15 +40,17 @@ public class CategoryActivity extends AppCompatActivity {
 
                 //선택시 카테고리 리스트의 해당 값 true / false
                 if( checkBox.isChecked()){
+                    checkBox.setBackgroundResource(R.drawable.round_res);
                     categoryList.put(checkBox.getText().toString(), true);
                 }
                 else{
+                    checkBox.setBackgroundResource(0);
                     categoryList.put(checkBox.getText().toString(), false);
                 }
             }
         };
 
-        //xml set
+        //ui set
         for(int i=1;i<8;i++){
             int categoryID = getResources().getIdentifier( "category" + String.valueOf(i), "id", getPackageName());
             String categoryString = getString(getResources().getIdentifier( "category" + String.valueOf(i), "string", getPackageName()));
@@ -52,16 +60,25 @@ public class CategoryActivity extends AppCompatActivity {
 
             //카테고리 리스트에서 value 값에 따라 true/false
             if(categoryList.get(categoryString)){
+                checkBox.setBackgroundResource(R.drawable.round_res);
                 checkBox.setChecked(true);
             }else{
                 checkBox.setChecked(false);
             }
             checkBox.setOnClickListener(categoryClickListener);
         }
+    }
 
-        //액티비티 종료시 리스트를 메인에 반환
-        Intent resultintent = new Intent();
-        resultintent.putExtra("categorylist", categoryList);
-        setResult(RESULT_OK, resultintent);
+    @Override
+    protected void onDestroy() {
+        fm.saveCategory(categoryList);
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("categorylist", categoryList);
     }
 }

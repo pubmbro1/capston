@@ -5,11 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".DictActivity">
+    tools:context=".Activity.DictActivity">
 
-    <ListView
-        android:id="@+id/dictlistView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/dictListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_margin="25dp" />
 
 </LinearLayout>

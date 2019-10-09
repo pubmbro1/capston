@@ -1,7 +1,8 @@
-package kr.ac.mju.capston.whatisthisdog;
+package kr.ac.mju.capston.whatisthisdog.Util;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -9,7 +10,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+
+import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
 
 public class FileManager {
 
@@ -17,9 +21,6 @@ public class FileManager {
     private File file;
     private Context context;
 
-    public FileManager(Context context){
-        this.context = context;
-    }
     public FileManager(Context context, String fileName){
         this.context = context;
         setFile(fileName);
@@ -35,23 +36,28 @@ public class FileManager {
 
 
     //파일에 쓰기
-    public void saveItemsToFile(String str) {
+    public void saveItemsToFile(DogInfo item, boolean new_file_write) {
+
         FileWriter fw = null ;
         BufferedWriter bufwr = null ;
 
         try {
             // open file.
 
-            //존재하면 이어쓰기
-            if(file.exists())
-                fw = new FileWriter(file,true) ;
-            else
+            if(new_file_write)
                 fw = new FileWriter(file,false);
+            else {
+                //존재하면 이어쓰기
+                if (file.exists())
+                    fw = new FileWriter(file, true);
+                else
+                    fw = new FileWriter(file, false);
+            }
 
             bufwr = new BufferedWriter(fw) ;
 
             //임시 작성
-            bufwr.write(str);
+            bufwr.write(item.getSaveData());
             bufwr.newLine();
             bufwr.flush() ;
 
@@ -89,14 +95,8 @@ public class FileManager {
                 bufrd = new BufferedReader(fr) ;
 
                 while ((str = bufrd.readLine()) != null) {
-                    //가져온 데이터 파싱
-                    String[] array = str.split("#");
-                    String image = array[0];
-                    String name = array[1];
-                    String desc = array[2];
-
                     //리스트에 추가
-                    resultList.add(new DogInfo(image,name, desc));
+                    resultList.add(new DogInfo(str));
                 }
 
                 bufrd.close() ;
@@ -184,5 +184,24 @@ public class FileManager {
         }
 
         return categoryList;
+    }
+
+    //전체 리스트와 삭제할 item을 넘겨받아 item 삭제, file 변경
+    public void deleteAlbumFile(DogInfo dogInfo, ArrayList<DogInfo> albumlist){
+        //이미지 삭제
+        String fileName = dogInfo.getDogImage();
+        File imageFile = new File(path, fileName);
+        imageFile.delete();
+
+        //리스트에서 item 삭제
+        ArrayList<DogInfo> resultList = albumlist;
+        if(!resultList.remove(dogInfo));
+            Log.d("deleteAlbumFile" , "아이템 삭제 오류" + dogInfo.getName());
+        Collections.reverse(resultList);
+
+        //변경된 리스트 다시 쓰기
+        for( DogInfo item : resultList){
+            saveItemsToFile(item, true);
+        }
     }
 }
