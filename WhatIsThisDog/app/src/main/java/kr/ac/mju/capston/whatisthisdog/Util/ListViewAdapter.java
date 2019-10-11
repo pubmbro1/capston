@@ -1,6 +1,7 @@
 package kr.ac.mju.capston.whatisthisdog.Util;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +86,7 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder = new albumViewHolder();
 
             viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.albumDogImageView) ;
+            viewHolder.iconImageView.setClipToOutline(true);
             viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.album_txt_name) ;
             //viewHolder.descTextView = (TextView) convertView.findViewById(R.id.txt_desc) ;
 
@@ -102,6 +104,8 @@ public class ListViewAdapter extends BaseAdapter {
                 .load(photoPath)
                 .placeholder(R.drawable.test_puppy_icon)
                 .error(R.drawable.test_puppy_icon)
+                .override(viewHolder.iconImageView.getWidth())
+                .centerCrop()
                 .into(viewHolder.iconImageView);
 
         viewHolder.titleTextView.setText(item.getName());
@@ -125,6 +129,8 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.rank_txt_name) ;
             //viewHolder.descTextView = (TextView) convertView.findViewById(R.id.txt_desc) ;
 
+            viewHolder.rankImage = (ImageView) convertView.findViewById(R.id.rankImage);
+
             convertView.setTag(viewHolder);
         }
         else{
@@ -139,7 +145,23 @@ public class ListViewAdapter extends BaseAdapter {
                 .load(photoPath)
                 .placeholder(R.drawable.test_puppy_icon)
                 .error(R.drawable.test_puppy_icon)
+                .override(viewHolder.iconImageView.getWidth())
+                .centerCrop()
                 .into(viewHolder.iconImageView);
+
+        int res;
+        if(position == 0)
+            res = R.drawable.first;
+        else if(position == 1)
+            res = R.drawable.second;
+        else
+            res = R.drawable.third;
+
+        Glide.with(context)
+                .load(res)
+                .placeholder(R.drawable.test_puppy_icon)
+                .error(R.drawable.test_puppy_icon)
+                .into(viewHolder.rankImage);
 
         viewHolder.titleTextView.setText(item.getName());
         //viewHolder.descTextView.setText(item.getDesc());
@@ -156,6 +178,7 @@ public class ListViewAdapter extends BaseAdapter {
     public class rankViewHolder{
         public ImageView iconImageView;
         public TextView titleTextView;
+        public ImageView rankImage;
         //public TextView descTextView;
     }
 

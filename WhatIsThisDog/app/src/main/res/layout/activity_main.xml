@@ -21,7 +21,7 @@
             android:id="@+id/b_camera"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/round_res"
+            android:background="@drawable/round_color_res"
             android:text="camera"
             android:textColor="@color/mainTextColor"
             android:textSize="18sp" />
@@ -44,7 +44,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_res"
+            android:background="@drawable/round_color_res"
             android:text="album"
             android:textColor="@color/mainTextColor"
             android:textSize="18sp" />
@@ -56,7 +56,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_res"
+            android:background="@drawable/round_color_res"
             android:text="matching"
             android:textColor="@color/mainTextColor"
             android:textSize="18sp" />
@@ -78,7 +78,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_res"
+            android:background="@drawable/round_color_res"
             android:text="dictionary"
             android:textColor="@color/mainTextColor"
             android:textSize="18sp" />
@@ -90,7 +90,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_res"
+            android:background="@drawable/round_color_res"
             android:text="category"
             android:textColor="@color/mainTextColor"
             android:textSize="18sp" />

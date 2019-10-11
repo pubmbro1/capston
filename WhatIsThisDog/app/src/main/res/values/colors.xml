@@ -12,6 +12,8 @@
 
     <color name="mainTextColor">#736357</color>
 
+    <color name="glass">#00000000</color>
+
 
     <color name="actionButton">#bbbbbb</color>
     <color name="windowBackground">#fafafa</color>

@@ -87,5 +87,7 @@ public class DogInfoActivity extends BaseActivity {
 
         name.setText(item.getName());
         desc.setText(item.getDesc());
+
+        back.bringToFront();
     }
 }

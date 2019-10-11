@@ -1,11 +1,8 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.HashMap;
 
@@ -40,7 +37,7 @@ public class CategoryActivity extends BaseActivity {
 
                 //선택시 카테고리 리스트의 해당 값 true / false
                 if( checkBox.isChecked()){
-                    checkBox.setBackgroundResource(R.drawable.round_res);
+                    checkBox.setBackgroundResource(R.drawable.round_color_res);
                     categoryList.put(checkBox.getText().toString(), true);
                 }
                 else{
@@ -60,7 +57,7 @@ public class CategoryActivity extends BaseActivity {
 
             //카테고리 리스트에서 value 값에 따라 true/false
             if(categoryList.get(categoryString)){
-                checkBox.setBackgroundResource(R.drawable.round_res);
+                checkBox.setBackgroundResource(R.drawable.round_color_res);
                 checkBox.setChecked(true);
             }else{
                 checkBox.setChecked(false);
