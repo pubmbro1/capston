@@ -1,24 +1,20 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
-import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 import kr.ac.mju.capston.whatisthisdog.Util.ListViewAdapter;
+import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 import kr.ac.mju.capston.whatisthisdog.R;
 
 public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
@@ -53,11 +49,10 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
     }
 
     private void init(){
-        adapter_myAlbum = new ListViewAdapter();
+        adapter_myAlbum = new ListViewAdapter(R.layout.listview_album_item);
         listView = (ListView) findViewById(R.id.albumlistView);
         listView.setAdapter(adapter_myAlbum);
 
-        //인텐트로 받은 정보 연결
         adapter_myAlbum.setList(albumlist);
 
         //리스트 클릭 이벤트 처리

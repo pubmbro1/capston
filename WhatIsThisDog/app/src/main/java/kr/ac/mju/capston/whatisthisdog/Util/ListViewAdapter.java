@@ -1,6 +1,7 @@
 package kr.ac.mju.capston.whatisthisdog.Util;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,10 @@ import kr.ac.mju.capston.whatisthisdog.R;
 public class ListViewAdapter extends BaseAdapter {
     // 강아지 정보 리스트
     private ArrayList<DogInfo> dogInfoList;
+    private int itemResId;
 
-    public ListViewAdapter() {
+    public ListViewAdapter(int itemResId) {
+        this.itemResId = itemResId;
         dogInfoList = new ArrayList<>();
     }
 
@@ -41,45 +44,14 @@ public class ListViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Context context = parent.getContext();
-
-        ViewHolder viewHolder;
-
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.listview_doginfo, parent, false);
-
-            viewHolder = new ViewHolder();
-
-            viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.dogImageView) ;
-            viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.txt_name) ;
-            viewHolder.descTextView = (TextView) convertView.findViewById(R.id.txt_desc) ;
-
-            convertView.setTag(viewHolder);
-        }
+        if(itemResId == R.layout.listview_album_item)
+            return getAlbumView(position, convertView, parent);
+        else if(itemResId == R.layout.listview_rank_item)
+            return getRankView(position, convertView, parent);
         else{
-            viewHolder = (ViewHolder)convertView.getTag();
+            Log.d("ListviewAdapter", String.valueOf(position) + "//resId : " + String.valueOf(itemResId));
+            return null; //ERROR
         }
-
-        DogInfo item = dogInfoList.get(position);
-
-        if(item.getDogImage().contains("R.drawable")){ //강아지 사진이 drawable, 사전 등록인 경우
-            Glide.with(context)
-                    .load(R.drawable.test_puppy_icon)
-                    .into(viewHolder.iconImageView);
-        }
-        else { //강아지 사진이 저장소(사용자 앨범)에 있는 경우
-            String photoPath = FileManager.getPath() + "/" + item.getDogImage();
-
-            Glide.with(context)
-                    .load(photoPath)
-                    .error(R.drawable.test_puppy_icon)
-                    .into(viewHolder.iconImageView);
-        }
-        viewHolder.titleTextView.setText(item.getName());
-        viewHolder.descTextView.setText(item.getDesc());
-
-        return convertView;
     }
 
 
@@ -99,17 +71,93 @@ public class ListViewAdapter extends BaseAdapter {
         삭제 코드 추가
          */
         dogInfoList.remove(item);
-
-
-
     }
 
-    public class ViewHolder{
+    private View getAlbumView(int position, View convertView, ViewGroup parent){
+        Context context = parent.getContext();
+
+        albumViewHolder viewHolder;
+
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(itemResId, parent, false);
+
+            viewHolder = new albumViewHolder();
+
+            viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.albumDogImageView) ;
+            viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.album_txt_name) ;
+            //viewHolder.descTextView = (TextView) convertView.findViewById(R.id.txt_desc) ;
+
+            convertView.setTag(viewHolder);
+        }
+        else{
+            viewHolder = (albumViewHolder)convertView.getTag();
+        }
+
+        DogInfo item = dogInfoList.get(position);
+
+        String photoPath = FileManager.getPath() + "/" + item.getDogImage();
+
+        Glide.with(context)
+                .load(photoPath)
+                .placeholder(R.drawable.test_puppy_icon)
+                .error(R.drawable.test_puppy_icon)
+                .into(viewHolder.iconImageView);
+
+        viewHolder.titleTextView.setText(item.getName());
+        //viewHolder.descTextView.setText(item.getDesc());
+
+        return convertView;
+    }
+
+    private View getRankView(int position, View convertView, ViewGroup parent){
+        Context context = parent.getContext();
+
+        rankViewHolder viewHolder;
+
+        if (convertView == null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(itemResId, parent, false);
+
+            viewHolder = new rankViewHolder();
+
+            viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.rankDogImageView) ;
+            viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.rank_txt_name) ;
+            //viewHolder.descTextView = (TextView) convertView.findViewById(R.id.txt_desc) ;
+
+            convertView.setTag(viewHolder);
+        }
+        else{
+            viewHolder = (rankViewHolder)convertView.getTag();
+        }
+
+        DogInfo item = dogInfoList.get(position);
+
+        String photoPath = FileManager.getPath() + "/" + item.getDogImage();
+
+        Glide.with(context)
+                .load(photoPath)
+                .placeholder(R.drawable.test_puppy_icon)
+                .error(R.drawable.test_puppy_icon)
+                .into(viewHolder.iconImageView);
+
+        viewHolder.titleTextView.setText(item.getName());
+        //viewHolder.descTextView.setText(item.getDesc());
+
+        return convertView;
+    }
+
+    public class albumViewHolder{
         public ImageView iconImageView;
         public TextView titleTextView;
-        public TextView descTextView;
+        //public TextView descTextView;
     }
 
+    public class rankViewHolder{
+        public ImageView iconImageView;
+        public TextView titleTextView;
+        //public TextView descTextView;
+    }
 
 }
 

@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,13 +24,15 @@ public class DogInfoActivity extends BaseActivity {
     private ImageView imageView;
     private TextView name;
     private TextView desc;
+    private ImageButton back;
+
 
     private String called = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initActionBar(true);
+        initActionBar(false);
         setContentView(R.layout.activity_dog_info);
 
         //인텐트로 선택된 강아지 받아오기
@@ -38,22 +43,48 @@ public class DogInfoActivity extends BaseActivity {
         imageView = findViewById(R.id.info_dogimage);
         name = findViewById(R.id.info_name);
         desc = findViewById(R.id.info_desc);
+        back = findViewById(R.id.b_info_back);
+
+        //Button set
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         //경로로 이미지 불러오기
         if(called.equals("album")) {
             String photoPath = FileManager.getPath() + "/" + item.getDogImage();
+
             Glide.with(this)
                     .load(photoPath)
+                    .placeholder(R.drawable.test_puppy_icon)
+                    .error(R.drawable.test_puppy_icon)
+                    .override(imageView.getWidth())
+                    .centerCrop()
                     .into(imageView);
         }
-        if(called.equals("dict")){
+        else if(called.equals("dict") || called.equals("match") ){
             int resId = getResources().getIdentifier(item.getDogImage(), "drawable", getPackageName());
             Log.d("resid" , item.getDogImage());
 
             Glide.with(this)
                     .load(resId)
+                    .placeholder(R.drawable.test_puppy_icon)
+                    .error(R.drawable.test_puppy_icon)
                     .into(imageView);
         }
+        else if(called.equals("camera")){ //카메라 액티비티에서 보낸 경우 (수정 필요)
+            String photoPath = FileManager.getPath() + "/" + item.getDogImage();
+            Glide.with(this)
+                    .load(photoPath)
+                    .placeholder(R.drawable.test_puppy_icon)
+                    .override(imageView.getWidth())
+                    .centerCrop()
+                    .into(imageView);
+        }
+
         name.setText(item.getName());
         desc.setText(item.getDesc());
     }

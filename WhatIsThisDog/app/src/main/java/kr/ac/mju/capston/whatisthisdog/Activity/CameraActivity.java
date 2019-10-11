@@ -198,9 +198,11 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         fm.saveItemsToFile(saveItem, false) ;
 
 
-        //앨범으로 이동
-        //Intent intent = new Intent(CameraActivity.this, AlbumActivity.class);
-        //startActivity(intent);
+        //정보보기로 이동
+        Intent intent = new Intent(CameraActivity.this, DogInfoActivity.class);
+        intent.putExtra("dogitem", saveItem);
+        intent.putExtra("call", "camera");
+        startActivity(intent);
         finish();
     }
 }

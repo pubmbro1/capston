@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,9 +70,13 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 itemController.refferalItem = item;
                 itemController.header_title.setText(item.text);
                 if (item.invisibleChildren == null) {
-                    itemController.btn_expand_toggle.setImageResource(R.drawable.minus);
+                    Glide.with(parCon)
+                            .load(R.drawable.minus)
+                            .into(itemController.btn_expand_toggle);
                 } else {
-                    itemController.btn_expand_toggle.setImageResource(R.drawable.plus);
+                    Glide.with(parCon)
+                            .load(R.drawable.plus)
+                            .into(itemController.btn_expand_toggle);
                 }
                 itemController.btn_expand_toggle.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -84,7 +90,9 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 count++;
                             }
                             notifyItemRangeRemoved(pos + 1, count);
-                            itemController.btn_expand_toggle.setImageResource(R.drawable.plus);
+                            Glide.with(parCon)
+                                    .load(R.drawable.plus)
+                                    .into(itemController.btn_expand_toggle);
                         } else {
                             int pos = data.indexOf(itemController.refferalItem);
                             int index = pos + 1;
@@ -93,7 +101,9 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 index++;
                             }
                             notifyItemRangeInserted(pos + 1, index - pos - 1);
-                            itemController.btn_expand_toggle.setImageResource(R.drawable.minus);
+                            Glide.with(parCon)
+                                    .load(R.drawable.minus)
+                                    .into(itemController.btn_expand_toggle);
                             item.invisibleChildren = null;
                         }
                     }
@@ -114,8 +124,6 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         parCon.startActivity(intent);
                     }
                 });
-
-
                 break;
         }
     }
@@ -124,7 +132,6 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     public int getItemViewType(int position) {
         return data.get(position).type;
     }
-
 
     @Override
     public int getItemCount() {
