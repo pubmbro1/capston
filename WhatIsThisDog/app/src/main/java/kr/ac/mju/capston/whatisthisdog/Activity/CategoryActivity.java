@@ -1,9 +1,15 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import kr.ac.mju.capston.whatisthisdog.R;
@@ -11,71 +17,68 @@ import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 
 public class CategoryActivity extends BaseActivity {
 
-    private HashMap<String, Boolean> categoryList;
-    private CheckBox checkBox;
+    private ArrayList<Integer> categoryList;
+    private TextView textView;
+    private SeekBar seekBar;
+
+    private Button b_save;
 
     private FileManager fm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initActionBar(true);
+        initActionBar(false);
         setContentView(R.layout.activity_category);
 
         fm = new FileManager(this, "category.txt");
 
         if(savedInstanceState != null)
-            categoryList = (HashMap<String, Boolean>) savedInstanceState.getSerializable("categorylist");
+            categoryList = (ArrayList<Integer>) savedInstanceState.getSerializable("categorylist");
         else
             categoryList = fm.loadCategory();
 
-        //카테고리 클릭시 이벤트 처리
-        View.OnClickListener categoryClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                checkBox = findViewById(view.getId());
-
-                //선택시 카테고리 리스트의 해당 값 true / false
-                if( checkBox.isChecked()){
-                    checkBox.setBackgroundResource(R.drawable.round_color_res);
-                    categoryList.put(checkBox.getText().toString(), true);
-                }
-                else{
-                    checkBox.setBackgroundResource(0);
-                    categoryList.put(checkBox.getText().toString(), false);
-                }
-            }
-        };
-
         //ui set
-        for(int i=1;i<8;i++){
+        textView = findViewById(R.id.category_title);
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+
+        for(int i=0;i<FileManager.C_SIZE;i++){
             int categoryID = getResources().getIdentifier( "category" + String.valueOf(i), "id", getPackageName());
             String categoryString = getString(getResources().getIdentifier( "category" + String.valueOf(i), "string", getPackageName()));
 
-            checkBox = findViewById(categoryID);
-            checkBox.setText(categoryString);
+            textView = findViewById(categoryID);
+            textView.setText(categoryString);
 
-            //카테고리 리스트에서 value 값에 따라 true/false
-            if(categoryList.get(categoryString)){
-                checkBox.setBackgroundResource(R.drawable.round_color_res);
-                checkBox.setChecked(true);
-            }else{
-                checkBox.setChecked(false);
-            }
-            checkBox.setOnClickListener(categoryClickListener);
+            //카테고리 리스트에서 value 값에 따라 seekbar 조절
+            int seekBarID = getResources().getIdentifier( "seekBar" + String.valueOf(i), "id", getPackageName());
+
+            seekBar = findViewById(seekBarID);
+            seekBar.setProgress(categoryList.get(i));
         }
-    }
 
-    @Override
-    protected void onDestroy() {
-        fm.saveCategory(categoryList);
-        super.onDestroy();
+        b_save = findViewById(R.id.b_save);
+        b_save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                for(int i=0;i<FileManager.C_SIZE;i++){
+                    String categoryString = getString(getResources().getIdentifier( "category" + String.valueOf(i), "string", getPackageName()));
+                    int seekBarID = getResources().getIdentifier( "seekBar" + String.valueOf(i), "id", getPackageName());
+
+                    seekBar = findViewById(seekBarID);
+
+                    categoryList.set(i, seekBar.getProgress());
+                }
+
+                fm.saveCategory(categoryList);
+                Toast.makeText(CategoryActivity.this,"저장 완료",Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
-
         outState.putSerializable("categorylist", categoryList);
     }
 }

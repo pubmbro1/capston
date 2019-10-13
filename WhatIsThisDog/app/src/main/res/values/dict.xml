@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="dict_size">24</integer>
+    <integer name="tag_size">14</integer>
+
+    <string name="tag0">ㄱ</string>
+    <string name="tag1">ㄴ</string>
+    <string name="tag2">ㄷ</string>
+    <string name="tag3">ㄹ</string>
+    <string name="tag4">ㅁ</string>
+    <string name="tag5">ㅂ</string>
+    <string name="tag6">ㅅ</string>
+    <string name="tag7">ㅇ</string>
+    <string name="tag8">ㅈ</string>
+    <string name="tag9">ㅊ</string>
+    <string name="tag10">ㅋ</string>
+    <string name="tag11">ㅌ</string>
+    <string name="tag12">ㅍ</string>
+    <string name="tag13">ㅎ</string>
+
+
+    <string name="dog0">dict_test_puppy#TEST DOG0#physical#tendency#desc#0</string>
+    <string name="dog1">dict_test_puppy#TEST DOG1#physical#tendency#desc#1</string>
+    <string name="dog2">dict_test_puppy#TEST DOG2#physical#tendency#desc#2</string>
+    <string name="dog3">dict_test_puppy#TEST DOG3#physical#tendency#desc#3</string>
+    <string name="dog4">dict_test_puppy#TEST DOG4#physical#tendency#desc#4</string>
+    <string name="dog5">dict_test_puppy#TEST DOG 5#physical#tendency#desc#5</string>
+    <string name="dog6">dict_test_puppy#TEST DOG 6#physical#tendency#desc#6</string>
+    <string name="dog7">dict_test_puppy#TEST DOG 7#physical#tendency#desc#7</string>
+    <string name="dog8">dict_test_puppy#TEST DOG 8#physical#tendency#desc#8</string>
+    <string name="dog9">dict_test_puppy#TEST DOG 9#physical#tendency#desc#9</string>
+    <string name="dog10">dict_test_puppy#TEST DOG 10#physical#tendency#desc#10</string>
+    <string name="dog11">dict_test_puppy#TEST DOG 11#physical#tendency#desc#11</string>
+    <string name="dog12">dict_test_puppy#TEST DOG 12#physical#tendency#desc#12</string>
+    <string name="dog13">dict_test_puppy#TEST DOG 13#physical#tendency#desc#13</string>
+    <string name="dog14">dict_test_puppy#TEST DOG 14#physical#tendency#desc#14</string>
+    <string name="dog15">dict_test_puppy#TEST DOG 15#physical#tendency#desc#15</string>
+    <string name="dog16">dict_test_puppy#TEST DOG 16#physical#tendency#desc#16</string>
+    <string name="dog17">dict_test_puppy#TEST DOG 17#physical#tendency#desc#17</string>
+    <string name="dog18">dict_test_puppy#TEST DOG 18#physical#tendency#desc#18</string>
+    <string name="dog19">dict_test_puppy#TEST DOG 19#physical#tendency#desc#19</string>
+    <string name="dog20">dict_test_puppy#TEST DOG 20#physical#tendency#desc#20</string>
+    <string name="dog21">dict_test_puppy#TEST DOG 21#physical#tendency#desc#21</string>
+    <string name="dog22">dict_test_puppy#TEST DOG 22#physical#tendency#desc#22</string>
+    <string name="dog23">dict_test_puppy#TEST DOG 23#physical#tendency#desc#23</string>
+
+</resources>

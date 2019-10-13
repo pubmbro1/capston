@@ -39,19 +39,19 @@ public class MatchingActivity extends BaseActivity {
 
         //임시코드
         ranklist = new ArrayList<>();
-        ranklist.add(new DogInfo("test_puppy_icon", "first", "info"));
-        ranklist.add(new DogInfo("test_puppy_icon", "second", "info"));
-        ranklist.add(new DogInfo("test_puppy_icon", "third", "info"));
+        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy")));
+        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy")));
+        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy")));
 
         init();
     }
 
     private void init(){
         adapter_rank = new ListViewAdapter(R.layout.listview_rank_item);
+        adapter_rank.setList(ranklist);
+
         listView = (ListView) findViewById(R.id.rankListView);
         listView.setAdapter(adapter_rank);
-
-        adapter_rank.setList(ranklist);
 
         //리스트 클릭 이벤트 처리
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

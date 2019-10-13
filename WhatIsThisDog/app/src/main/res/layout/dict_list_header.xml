@@ -9,7 +9,7 @@
     android:paddingEnd="10dp"
     android:paddingRight="10dp"
     android:paddingBottom="5dp"
-    android:background="@drawable/round_color_res"
+    android:background="@drawable/bg_roundsolid_maincolor"
     >
 
     <TextView
@@ -28,5 +28,5 @@
         android:layout_height="30dp"
         android:layout_weight="0"
         android:padding="6dp"
-        android:src="@drawable/plus" />
+        android:src="@drawable/icon_plus" />
 </LinearLayout>

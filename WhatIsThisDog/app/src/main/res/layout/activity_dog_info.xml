@@ -9,110 +9,164 @@
     android:weightSum="10"
     tools:context=".Activity.DogInfoActivity">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center|top"
-        android:orientation="vertical"
-        android:weightSum="10">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3.5">
-
-            <ImageButton
-                android:id="@+id/b_info_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:background="#00FFFFFF"
-                app:srcCompat="@drawable/back" />
-
-            <ImageView
-                android:id="@+id/info_dogimage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true" />
-
-        </RelativeLayout>
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.5"
-            android:background="@color/puppyBrown"
-            android:orientation="horizontal">
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:gravity="center|top"
+            android:orientation="vertical"
             android:weightSum="10">
 
-            <TextView
-                android:id="@+id/info_matchrate"
-                android:layout_width="wrap_content"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageButton
+                    android:id="@+id/b_info_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#00FFFFFF"
+                    app:srcCompat="@drawable/icon_back" />
+
+                <ImageView
+                    android:id="@+id/info_dogimage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/puppyBrown"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="___"
-                android:textColor="@color/mainTextColor"
-                android:textSize="24dp" />
+                android:layout_weight="1"
+                android:background="@drawable/bg_roundborder"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="15dp"
+                android:weightSum="10">
 
-            <Space
-                android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/info_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="TEST DOG NAME"
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="20sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="당신의 성향과 "
+                        android:textColor="@color/mainTextColor" />
+
+                    <TextView
+                        android:id="@+id/info_matchrate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/bg_rate"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="98%"
+                        android:textColor="@android:color/white"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text=" 일치해요!"
+                        android:textColor="@color/mainTextColor" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="20dp">
 
-            <TextView
-                android:id="@+id/info_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Name"
-                android:textColor="@color/mainTextColor"
-                android:textSize="24dp" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/info_tendency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="tendency"
+                    android:textColor="@color/mainTextColor" />
 
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@color/mainColor" />
+            </LinearLayout>
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5">
+            <View
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/mainColor" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:background="@drawable/round_color_res"
                 android:gravity="center|top"
                 android:minHeight="200dp"
                 android:orientation="vertical"
-                android:padding="20dp">
+                android:paddingLeft="20dp"
+                android:paddingBottom="20dp"
+                android:paddingRight="20dp">
+
+                <TextView
+                    android:id="@+id/info_physical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:text="physical"
+                    android:textColor="@color/mainTextColor" />
 
                 <TextView
                     android:id="@+id/info_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:text="desc"
                     android:textColor="@color/mainTextColor" />
-            </LinearLayout>
-        </ScrollView>
 
-    </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

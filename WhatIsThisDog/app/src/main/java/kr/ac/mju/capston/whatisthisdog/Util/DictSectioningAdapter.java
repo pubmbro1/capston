@@ -3,7 +3,6 @@ package kr.ac.mju.capston.whatisthisdog.Util;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,11 +70,11 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 itemController.header_title.setText(item.text);
                 if (item.invisibleChildren == null) {
                     Glide.with(parCon)
-                            .load(R.drawable.minus)
+                            .load(R.drawable.icon_minus)
                             .into(itemController.btn_expand_toggle);
                 } else {
                     Glide.with(parCon)
-                            .load(R.drawable.plus)
+                            .load(R.drawable.icon_plus)
                             .into(itemController.btn_expand_toggle);
                 }
                 itemController.btn_expand_toggle.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +90,7 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             }
                             notifyItemRangeRemoved(pos + 1, count);
                             Glide.with(parCon)
-                                    .load(R.drawable.plus)
+                                    .load(R.drawable.icon_plus)
                                     .into(itemController.btn_expand_toggle);
                         } else {
                             int pos = data.indexOf(itemController.refferalItem);
@@ -102,7 +101,7 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                             }
                             notifyItemRangeInserted(pos + 1, index - pos - 1);
                             Glide.with(parCon)
-                                    .load(R.drawable.minus)
+                                    .load(R.drawable.icon_minus)
                                     .into(itemController.btn_expand_toggle);
                             item.invisibleChildren = null;
                         }
@@ -157,7 +156,9 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
         public DogInfo dogInfo;
 
-        public Item() {
+        public Item(int type, String tag) {
+            this.type = type;
+            this.text = tag;
         }
 
         public Item(int type, DogInfo dogInfo) {

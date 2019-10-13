@@ -26,5 +26,5 @@
         app:layout_constraintBottom_toTopOf="@+id/loadingText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/action_bar" />
+        app:srcCompat="@drawable/icon_loadingpuppy" />
 </androidx.constraintlayout.widget.ConstraintLayout>

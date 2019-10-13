@@ -1,7 +1,3 @@
-/*
-* 찍은 후 넘어가는 부분 미구현
-* */
-
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -190,11 +186,9 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         }
 
 
-
-
         // 텍스트 파일에 정보 저장
         fm = new FileManager(this,"album.txt");
-        DogInfo saveItem = new DogInfo(fileName, "DogName", "info" + fileName);
+        DogInfo saveItem = new DogInfo(DogInfo.getRandomData(fileName));
         fm.saveItemsToFile(saveItem, false) ;
 
 

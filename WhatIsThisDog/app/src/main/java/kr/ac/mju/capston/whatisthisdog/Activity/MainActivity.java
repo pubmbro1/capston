@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
@@ -97,8 +98,10 @@ public class MainActivity extends BaseActivity {
         if(!FileManager.getPath().mkdir()){
             Log.d("dir create" , "fail");
         }
-
-
+        if(!new FileManager(this,"category.txt").getFileExists()){
+            Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
+            startActivity(intent);
+        }
     }
 
 

@@ -1,7 +1,6 @@
 package kr.ac.mju.capston.whatisthisdog.Util;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +54,6 @@ public class ListViewAdapter extends BaseAdapter {
         }
     }
 
-
     @Override
     public long getItemId(int position) {
         return position ;
@@ -66,18 +64,13 @@ public class ListViewAdapter extends BaseAdapter {
         return dogInfoList.get(position) ;
     }
 
-    public void removeItem(DogInfo item) {
-        /*
-
-        삭제 코드 추가
-         */
-        dogInfoList.remove(item);
-    }
-
     private View getAlbumView(int position, View convertView, ViewGroup parent){
         Context context = parent.getContext();
 
         albumViewHolder viewHolder;
+
+        DogInfo item = dogInfoList.get(position);
+        String photoPath = FileManager.getPath() + "/" + item.getDogImage();
 
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -87,8 +80,17 @@ public class ListViewAdapter extends BaseAdapter {
 
             viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.albumDogImageView) ;
             viewHolder.iconImageView.setClipToOutline(true);
-            viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.album_txt_name) ;
-            //viewHolder.descTextView = (TextView) convertView.findViewById(R.id.txt_desc) ;
+            viewHolder.name = (TextView) convertView.findViewById(R.id.album_name) ;
+            viewHolder.matchRate = (TextView) convertView.findViewById(R.id.album_rate) ;
+            viewHolder.date = (TextView) convertView.findViewById(R.id.album_date) ;
+
+            Glide.with(context)
+                    .load(photoPath)
+                    .placeholder(R.drawable.test_puppy_icon)
+                    .error(R.drawable.icon_sadpuppy)
+                    .override(viewHolder.iconImageView.getWidth())
+                    .centerCrop()
+                    .into(viewHolder.iconImageView);
 
             convertView.setTag(viewHolder);
         }
@@ -96,20 +98,9 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder = (albumViewHolder)convertView.getTag();
         }
 
-        DogInfo item = dogInfoList.get(position);
-
-        String photoPath = FileManager.getPath() + "/" + item.getDogImage();
-
-        Glide.with(context)
-                .load(photoPath)
-                .placeholder(R.drawable.test_puppy_icon)
-                .error(R.drawable.test_puppy_icon)
-                .override(viewHolder.iconImageView.getWidth())
-                .centerCrop()
-                .into(viewHolder.iconImageView);
-
-        viewHolder.titleTextView.setText(item.getName());
-        //viewHolder.descTextView.setText(item.getDesc());
+        viewHolder.name.setText(item.getName());
+        viewHolder.matchRate.setText(item.getMatchRate() + "%");
+        viewHolder.date.setText(item.getDogImage());
 
         return convertView;
     }
@@ -119,6 +110,8 @@ public class ListViewAdapter extends BaseAdapter {
 
         rankViewHolder viewHolder;
 
+        DogInfo item = dogInfoList.get(position);
+
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(itemResId, parent, false);
@@ -126,10 +119,21 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder = new rankViewHolder();
 
             viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.rankDogImageView) ;
-            viewHolder.titleTextView = (TextView) convertView.findViewById(R.id.rank_txt_name) ;
-            //viewHolder.descTextView = (TextView) convertView.findViewById(R.id.txt_desc) ;
-
             viewHolder.rankImage = (ImageView) convertView.findViewById(R.id.rankImage);
+            viewHolder.name = (TextView) convertView.findViewById(R.id.rank_name) ;
+            viewHolder.matchRate = (TextView) convertView.findViewById(R.id.rank_rate) ;
+            viewHolder.tendency = (TextView) convertView.findViewById(R.id.rank_tendency) ;
+            viewHolder.physical = (TextView) convertView.findViewById(R.id.rank_physical) ;
+            viewHolder.desc = (TextView) convertView.findViewById(R.id.rank_desc) ;
+
+            int resId = context.getResources().getIdentifier(item.getDogImage() , "drawable", context.getPackageName());
+            Glide.with(context)
+                    .load(resId)
+                    .placeholder(R.drawable.test_puppy_icon)
+                    .error(R.drawable.icon_sadpuppy)
+                    .override(viewHolder.iconImageView.getWidth())
+                    .centerCrop()
+                    .into(viewHolder.iconImageView);
 
             convertView.setTag(viewHolder);
         }
@@ -137,49 +141,42 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder = (rankViewHolder)convertView.getTag();
         }
 
-        DogInfo item = dogInfoList.get(position);
-
-        String photoPath = FileManager.getPath() + "/" + item.getDogImage();
-
-        Glide.with(context)
-                .load(photoPath)
-                .placeholder(R.drawable.test_puppy_icon)
-                .error(R.drawable.test_puppy_icon)
-                .override(viewHolder.iconImageView.getWidth())
-                .centerCrop()
-                .into(viewHolder.iconImageView);
-
         int res;
         if(position == 0)
-            res = R.drawable.first;
+            res = R.drawable.icon_first;
         else if(position == 1)
-            res = R.drawable.second;
+            res = R.drawable.icon_second;
         else
             res = R.drawable.third;
 
         Glide.with(context)
                 .load(res)
-                .placeholder(R.drawable.test_puppy_icon)
-                .error(R.drawable.test_puppy_icon)
                 .into(viewHolder.rankImage);
 
-        viewHolder.titleTextView.setText(item.getName());
-        //viewHolder.descTextView.setText(item.getDesc());
+        viewHolder.name.setText(item.getName());
+        viewHolder.matchRate.setText(item.getMatchRate() + "%");
+        viewHolder.tendency.setText(item.getTendency());
+        viewHolder.physical.setText(item.getPhysical());
+        viewHolder.desc.setText(item.getDesc());
 
         return convertView;
     }
 
     public class albumViewHolder{
         public ImageView iconImageView;
-        public TextView titleTextView;
-        //public TextView descTextView;
+        public TextView name;
+        public TextView matchRate;
+        public TextView date;
     }
 
     public class rankViewHolder{
         public ImageView iconImageView;
-        public TextView titleTextView;
         public ImageView rankImage;
-        //public TextView descTextView;
+        public TextView name;
+        public TextView matchRate;
+        public TextView tendency;
+        public TextView physical;
+        public TextView desc;
     }
 
 }

@@ -23,9 +23,13 @@ public class DogInfoActivity extends BaseActivity {
 
     private ImageView imageView;
     private TextView name;
-    private TextView desc;
-    private ImageButton back;
 
+    private TextView matchRate;
+    private TextView tendency;
+    private TextView physical;
+    private TextView desc;
+
+    private ImageButton back;
 
     private String called = "";
 
@@ -40,8 +44,12 @@ public class DogInfoActivity extends BaseActivity {
         item = (DogInfo) intent.getExtras().getSerializable("dogitem");
         called = intent.getExtras().getString("call");
 
+        //SetUi
         imageView = findViewById(R.id.info_dogimage);
         name = findViewById(R.id.info_name);
+        matchRate =findViewById(R.id.info_matchrate);
+        tendency = findViewById(R.id.info_tendency);
+        physical =findViewById(R.id.info_physical);
         desc = findViewById(R.id.info_desc);
         back = findViewById(R.id.b_info_back);
 
@@ -60,7 +68,7 @@ public class DogInfoActivity extends BaseActivity {
             Glide.with(this)
                     .load(photoPath)
                     .placeholder(R.drawable.test_puppy_icon)
-                    .error(R.drawable.test_puppy_icon)
+                    .error(R.drawable.icon_sadpuppy)
                     .override(imageView.getWidth())
                     .centerCrop()
                     .into(imageView);
@@ -72,7 +80,9 @@ public class DogInfoActivity extends BaseActivity {
             Glide.with(this)
                     .load(resId)
                     .placeholder(R.drawable.test_puppy_icon)
-                    .error(R.drawable.test_puppy_icon)
+                    .error(R.drawable.icon_sadpuppy)
+                    .override(imageView.getWidth())
+                    .centerCrop()
                     .into(imageView);
         }
         else if(called.equals("camera")){ //카메라 액티비티에서 보낸 경우 (수정 필요)
@@ -80,14 +90,19 @@ public class DogInfoActivity extends BaseActivity {
             Glide.with(this)
                     .load(photoPath)
                     .placeholder(R.drawable.test_puppy_icon)
+                    .error(R.drawable.icon_sadpuppy)
                     .override(imageView.getWidth())
                     .centerCrop()
                     .into(imageView);
         }
 
         name.setText(item.getName());
+        matchRate.setText(item.getMatchRate() + "%");
+        tendency.setText(item.getTendency());
+        physical.setText(item.getPhysical());
         desc.setText(item.getDesc());
 
         back.bringToFront();
     }
+
 }

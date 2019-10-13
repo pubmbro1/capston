@@ -17,6 +17,7 @@ import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
 
 public class FileManager {
 
+    public static final int C_SIZE = 5; //카테고리 5개
     private static final File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/WhatIsThisDog");
     private File file;
     private Context context;
@@ -26,6 +27,10 @@ public class FileManager {
         setFile(fileName);
     }
 
+    public boolean getFileExists(){
+        return file.exists();
+    }
+
     public static File getPath() {
         return path;
     }
@@ -33,7 +38,6 @@ public class FileManager {
     public void setFile(String fileName){
         file = new File(path, fileName);
     }
-
 
     //파일에 쓰기
     public void saveItemsToFile(DogInfo item, boolean new_file_write) {
@@ -79,7 +83,6 @@ public class FileManager {
         }
     }
 
-
     //파일로 부터 읽어와서 정보리스트들을 반환
     public ArrayList<DogInfo> loadItemsFromFile() {
 
@@ -109,8 +112,8 @@ public class FileManager {
         return resultList;
     }
 
-    //카테고리 저장 : [카테고리이름]#[선택여부]
-    public void saveCategory(HashMap<String,Boolean> categorylist){
+    //카테고리 저장
+    public void saveCategory(ArrayList<Integer> categorylist){
         FileWriter fw = null ;
         BufferedWriter bufwr = null ;
 
@@ -119,10 +122,11 @@ public class FileManager {
             fw = new FileWriter(file,false);
             bufwr = new BufferedWriter(fw) ;
 
-            for(String key : categorylist.keySet()){
-                bufwr.write(key + "#" + String.valueOf(categorylist.get(key)));
+            for(int i=0;i<categorylist.size();i++){
+                bufwr.write(categorylist.get(i).toString());
                 bufwr.newLine();
             }
+
             bufwr.flush() ;
 
         } catch (Exception e) {
@@ -144,18 +148,18 @@ public class FileManager {
     }
 
     //카테고리 불러오기
-    public HashMap<String, Boolean> loadCategory(){
+    public ArrayList<Integer> loadCategory(){
         FileReader fr = null ;
         BufferedReader bufrd = null ;
         String str;
-        HashMap<String, Boolean> categoryList = new HashMap<>();
+        ArrayList<Integer> categoryList = new ArrayList<>();
+
 
         //첫 실행 - category.txt 없는 경우
         if(!file.exists()){
-            for(int i=1;i<8;i++) {  //카테고리 갯수만큼
-                //categoryList를 카테고리,false로 채움 (카테고리 이름 string.xml 저장 및 변경)
-                int categoryID = context.getResources().getIdentifier( "category" + String.valueOf(i), "string", context.getPackageName());
-                categoryList.put(context.getString(categoryID), false);
+            for(int i=0;i<C_SIZE;i++) {  //카테고리 갯수만큼 (flag 제외)
+                //categoryList를 카테고리,progress=2로 채움 (카테고리 이름 string.xml 저장 및 변경)
+                categoryList.add(2);
             }
             saveCategory(categoryList);
 
@@ -168,13 +172,7 @@ public class FileManager {
             bufrd = new BufferedReader(fr) ;
 
             while ((str = bufrd.readLine()) != null) {
-                //가져온 데이터 파싱
-                String[] array = str.split("#");
-                String category = array[0];
-                String check = array[1];
-
-                //리스트에 추가
-                categoryList.put(category, Boolean.valueOf(check));
+                categoryList.add(Integer.valueOf(str));
             }
 
             bufrd.close() ;
@@ -185,6 +183,7 @@ public class FileManager {
 
         return categoryList;
     }
+
 
     //전체 리스트와 삭제할 item을 넘겨받아 item 삭제, file 변경
     public void deleteAlbumFile(DogInfo dogInfo, ArrayList<DogInfo> albumlist){
@@ -204,4 +203,7 @@ public class FileManager {
             saveItemsToFile(item, true);
         }
     }
+
+
+
 }

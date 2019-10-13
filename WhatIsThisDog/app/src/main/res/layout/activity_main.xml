@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/mainColor"
     android:orientation="vertical"
     android:weightSum="10"
     tools:context=".Activity.MainActivity">
@@ -12,19 +13,40 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:paddingTop="30dp"
         android:paddingLeft="30dp"
+        android:paddingTop="30dp"
         android:paddingRight="30dp"
         android:paddingBottom="15dp">
 
-        <Button
-            android:id="@+id/b_camera"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/round_color_res"
-            android:text="camera"
-            android:textColor="@color/mainTextColor"
-            android:textSize="18sp" />
+            android:background="@drawable/bg_roundsolid_puppybrown"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/b_camera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@color/glass"
+                android:gravity="center"
+                android:textColor="@color/mainTextColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/buttonText1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/icon_camera"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="CAMERA"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -37,29 +59,65 @@
         android:paddingRight="30dp"
         android:weightSum="10">
 
-        <Button
-            android:id="@+id/b_album"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_color_res"
-            android:text="album"
-            android:textColor="@color/mainTextColor"
-            android:textSize="18sp" />
+            android:background="@drawable/bg_roundsolid_puppybrown">
 
-        <Button
-            android:id="@+id/b_matching"
+            <Button
+                android:id="@+id/b_album"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/glass"
+                android:textColor="@color/mainTextColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/buttonText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/icon_album"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="ALBUM"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_color_res"
-            android:text="matching"
-            android:textColor="@color/mainTextColor"
-            android:textSize="18sp" />
+            android:background="@drawable/bg_roundsolid_puppybrown">
+
+            <Button
+                android:id="@+id/b_matching"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/glass"
+                android:textColor="@color/mainTextColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/buttonText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/icon_ranking"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="MATCHING"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -71,29 +129,64 @@
         android:paddingRight="30dp"
         android:weightSum="10">
 
-        <Button
-            android:id="@+id/b_dictionary"
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_color_res"
-            android:text="dictionary"
-            android:textColor="@color/mainTextColor"
-            android:textSize="18sp" />
+            android:background="@drawable/bg_roundsolid_puppybrown">
 
-        <Button
-            android:id="@+id/b_category"
+            <Button
+                android:id="@+id/b_dictionary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/glass"
+                android:textColor="@color/mainTextColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/buttonText4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/icon_dict"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="DICTIONARY"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="5"
-            android:background="@drawable/round_color_res"
-            android:text="category"
-            android:textColor="@color/mainTextColor"
-            android:textSize="18sp" />
+            android:background="@drawable/bg_roundsolid_puppybrown">
+
+            <Button
+                android:id="@+id/b_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/glass"
+                android:textColor="@color/mainTextColor"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/buttonText5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@drawable/icon_category"
+                android:enabled="false"
+                android:gravity="center"
+                android:text="CATEGORY"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
     </LinearLayout>
 
 </LinearLayout>

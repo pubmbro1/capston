@@ -5,6 +5,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -26,7 +27,6 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
     private SwipeRefreshLayout refreshLayout;
 
     private FileManager fm;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +65,7 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
                 Intent intent = new Intent(AlbumActivity.this, DogInfoActivity.class);
                 intent.putExtra("dogitem" , item);
                 intent.putExtra("call", "album");
+
                 startActivity(intent);
             }
         });
@@ -89,17 +90,17 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
         },1000);
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-
-        outState.putSerializable("albumlist", albumlist);
-    }
-
     public ArrayList<DogInfo> loadReverseListFromFile(){
         ArrayList<DogInfo> reverseList = fm.loadItemsFromFile();
         Collections.reverse(reverseList);
 
         return reverseList;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+
+        outState.putSerializable("albumlist", albumlist);
     }
 }
