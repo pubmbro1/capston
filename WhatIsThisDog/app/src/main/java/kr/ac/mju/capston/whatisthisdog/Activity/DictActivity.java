@@ -26,7 +26,7 @@ public class DictActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initActionBar(true);
+        initActionBar(true, "Dictionary");
         setContentView(R.layout.activity_dict);
 
         if(savedInstanceState != null){

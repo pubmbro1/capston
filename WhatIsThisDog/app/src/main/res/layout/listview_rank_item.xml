@@ -14,7 +14,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/bg_roundborder_dash"
+        android:background="@drawable/bg_roundsolid_boneyellow"
         android:gravity="center|left"
         android:orientation="vertical"
         android:padding="5dp"
@@ -23,7 +23,7 @@
         <ImageView
             android:id="@+id/rankImage"
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp" />
 
@@ -32,7 +32,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_margin="10dp"
-            android:background="@color/mainColor" />
+            android:background="@color/puppyBrown" />
 
         <ImageView
             android:id="@+id/rankDogImageView"
@@ -116,58 +116,6 @@
             android:layout_height="1dp"
             android:layout_margin="10dp"
             android:background="@color/puppyBrown" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="20dp">
-
-            <TextView
-                android:id="@+id/rank_tendency"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="tendency"
-                android:textColor="@color/mainTextColor" />
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:background="@color/mainColor" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:background="@drawable/bg_roundsolid_maincolor"
-            android:gravity="center|top"
-            android:minHeight="200dp"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView
-                android:id="@+id/rank_physical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:text="physical"
-                android:textColor="@color/mainTextColor" />
-
-            <TextView
-                android:id="@+id/rank_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="desc"
-                android:textColor="@color/mainTextColor" />
-        </LinearLayout>
 
     </LinearLayout>
 

@@ -24,7 +24,7 @@ public class MatchingActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initActionBar(true);
+        initActionBar(true, "Matching");
         setContentView(R.layout.activity_matching);
 
 

@@ -122,9 +122,6 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder.rankImage = (ImageView) convertView.findViewById(R.id.rankImage);
             viewHolder.name = (TextView) convertView.findViewById(R.id.rank_name) ;
             viewHolder.matchRate = (TextView) convertView.findViewById(R.id.rank_rate) ;
-            viewHolder.tendency = (TextView) convertView.findViewById(R.id.rank_tendency) ;
-            viewHolder.physical = (TextView) convertView.findViewById(R.id.rank_physical) ;
-            viewHolder.desc = (TextView) convertView.findViewById(R.id.rank_desc) ;
 
             int resId = context.getResources().getIdentifier(item.getDogImage() , "drawable", context.getPackageName());
             Glide.with(context)
@@ -147,7 +144,7 @@ public class ListViewAdapter extends BaseAdapter {
         else if(position == 1)
             res = R.drawable.icon_second;
         else
-            res = R.drawable.third;
+            res = R.drawable.icon_third;
 
         Glide.with(context)
                 .load(res)
@@ -155,9 +152,6 @@ public class ListViewAdapter extends BaseAdapter {
 
         viewHolder.name.setText(item.getName());
         viewHolder.matchRate.setText(item.getMatchRate() + "%");
-        viewHolder.tendency.setText(item.getTendency());
-        viewHolder.physical.setText(item.getPhysical());
-        viewHolder.desc.setText(item.getDesc());
 
         return convertView;
     }
@@ -174,9 +168,6 @@ public class ListViewAdapter extends BaseAdapter {
         public ImageView rankImage;
         public TextView name;
         public TextView matchRate;
-        public TextView tendency;
-        public TextView physical;
-        public TextView desc;
     }
 
 }

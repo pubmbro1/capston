@@ -31,7 +31,7 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initActionBar(true);
+        initActionBar(true, "Album");
 
         fm = new FileManager(this, "album.txt");
 

@@ -34,11 +34,20 @@ public class BaseActivity extends AppCompatActivity {
         else
             actionBar.hide();
     }
+    public void initActionBar(boolean show, String title){
+        setCustomActionBar();
+        if(show) {
+            actionBar.setTitle(title);
+            actionBar.show();
+        }
+        else
+            actionBar.hide();
+    }
 
     private void setCustomActionBar(){
         actionBar = getSupportActionBar();
 
-        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayHomeAsUpEnabled(true);
     }
 

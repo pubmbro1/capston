@@ -48,7 +48,7 @@ public class DictSectioningAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             case CHILD:
                 TextView itemTextView = new TextView(context);
                 itemTextView.setPadding(subItemPaddingLeft, subItemPaddingTopAndBottom, 0, subItemPaddingTopAndBottom);
-                itemTextView.setTextColor(0x88000000);
+                itemTextView.setTextColor(context.getResources().getColor(R.color.mainTextColor));
                 itemTextView.setTextSize(16);
                 itemTextView.setPaintFlags(itemTextView.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
                 itemTextView.setLayoutParams(

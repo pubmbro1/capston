@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainColor"
     android:gravity="center|top"
     android:orientation="vertical"
     android:weightSum="10"
@@ -54,13 +55,15 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/bg_roundborder"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:padding="15dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="15dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="15dp"
                 android:weightSum="10">
 
                 <TextView
@@ -73,8 +76,8 @@
                     android:textSize="20sp" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="horizontal">
@@ -112,6 +115,14 @@
 
             </LinearLayout>
 
+            <View
+                android:id="@+id/view0"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:background="@color/puppyBrown" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,12 +140,12 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/view"
+                android:id="@+id/view1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:background="@color/mainColor" />
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:background="@color/puppyBrown" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,8 +155,8 @@
                 android:minHeight="200dp"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
-                android:paddingBottom="20dp"
-                android:paddingRight="20dp">
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp">
 
                 <TextView
                     android:id="@+id/info_physical"
