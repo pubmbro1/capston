@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +31,9 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
     private SwipeRefreshLayout refreshLayout;
 
     private FileManager fm;
+
+    //delete
+    private boolean del_mode = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +66,18 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                DogInfo item = (DogInfo) parent.getItemAtPosition(position) ;
+
+                DogInfo item = (DogInfo) parent.getItemAtPosition(position);
+
+                Log.d("아이템 클릭", ((TextView) v.findViewById(R.id.album_rate)).getText().toString());
+                Log.d("아이템 클릭2", String.valueOf(parent.getId()));
 
                 Intent intent = new Intent(AlbumActivity.this, DogInfoActivity.class);
-                intent.putExtra("dogitem" , item);
+                intent.putExtra("dogitem", item);
                 intent.putExtra("call", "album");
 
                 startActivity(intent);
+
             }
         });
 
@@ -102,5 +113,23 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
         super.onSaveInstanceState(outState);
 
         outState.putSerializable("albumlist", albumlist);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_delete :
+                if(del_mode) {
+                    del_mode = false;
+                    item.setIcon(getDrawable(R.drawable.icon_delete));
+                }
+                else {
+                    del_mode = true;
+                    item.setIcon(getDrawable(R.drawable.icon_check));
+                }
+                return true ;
+            default :
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

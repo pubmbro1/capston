@@ -13,6 +13,13 @@
         android:paddingRight="30dp"
         android:paddingBottom="15dp">
 
+        <View
+            android:id="@+id/select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#6D000000"
+            android:visibility="invisible" />
+
         <ImageView
             android:id="@+id/albumDogImageView"
             android:layout_width="match_parent"
@@ -24,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#CC736357"
+            android:background="#DC736357"
             android:gravity="center|left"
             android:orientation="horizontal">
 

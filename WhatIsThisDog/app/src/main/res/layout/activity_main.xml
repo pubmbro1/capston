@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/mainColor"
     android:orientation="vertical"
+    android:padding="30dp"
     android:weightSum="10"
     tools:context=".Activity.MainActivity">
 
@@ -13,15 +13,12 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:paddingLeft="30dp"
-        android:paddingTop="30dp"
-        android:paddingRight="30dp"
         android:paddingBottom="15dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_roundsolid_puppybrown"
+            android:background="@drawable/bg_roundsolid_soft"
             android:gravity="center">
 
             <Button
@@ -43,8 +40,9 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="CAMERA"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textColor="@color/mainTextColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -53,10 +51,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.5"
+        android:layout_weight="2.7"
         android:orientation="horizontal"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
         android:weightSum="10">
 
         <RelativeLayout
@@ -65,7 +61,7 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_puppybrown">
+            android:background="@drawable/bg_roundsolid_soft">
 
             <Button
                 android:id="@+id/b_album"
@@ -84,8 +80,9 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="ALBUM"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textColor="@color/mainTextColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </RelativeLayout>
 
@@ -95,7 +92,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_puppybrown">
+            android:background="@drawable/bg_roundsolid_soft">
 
             <Button
                 android:id="@+id/b_matching"
@@ -114,8 +111,9 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="MATCHING"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textColor="@color/mainTextColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </LinearLayout>
@@ -123,10 +121,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2.5"
+        android:layout_weight="2.7"
         android:orientation="horizontal"
-        android:paddingLeft="30dp"
-        android:paddingRight="30dp"
         android:weightSum="10">
 
         <RelativeLayout
@@ -135,7 +131,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_puppybrown">
+            android:background="@drawable/bg_roundsolid_soft">
 
             <Button
                 android:id="@+id/b_dictionary"
@@ -154,8 +150,9 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="DICTIONARY"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textColor="@color/mainTextColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -164,7 +161,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_puppybrown">
+            android:background="@drawable/bg_roundsolid_soft">
 
             <Button
                 android:id="@+id/b_category"
@@ -183,8 +180,9 @@
                 android:enabled="false"
                 android:gravity="center"
                 android:text="CATEGORY"
-                android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textColor="@color/mainTextColor"
+                android:textSize="16sp"
+                android:textStyle="bold" />
         </RelativeLayout>
 
     </LinearLayout>
