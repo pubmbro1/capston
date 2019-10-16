@@ -2,6 +2,8 @@ package kr.ac.mju.capston.whatisthisdog.Activity;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -9,8 +11,10 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -34,6 +38,7 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
 
     //delete
     private boolean del_mode = false;
+    private DogInfo del_temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +52,9 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
         else
             albumlist = loadReverseListFromFile();
 
-        if(albumlist.size() == 0 || albumlist == null){
+        if(checkEmpty())
             setContentView(R.layout.activity_empty_album);
-        }else {
+        else {
             setContentView(R.layout.activity_album);
             init();
         }
@@ -67,23 +72,63 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
 
-                DogInfo item = (DogInfo) parent.getItemAtPosition(position);
+                if (del_mode) {
+                    final DogInfo item = (DogInfo) parent.getItemAtPosition(position);
+                    final View select = v.findViewById(R.id.select);
+                    select.setVisibility(View.VISIBLE);
+                    select.bringToFront();
 
-                Log.d("아이템 클릭", ((TextView) v.findViewById(R.id.album_rate)).getText().toString());
-                Log.d("아이템 클릭2", String.valueOf(parent.getId()));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(AlbumActivity.this);
+                    builder.setTitle(item.getDogImage());
+                    builder.setMessage("정말로 삭제할까요?");
+                    builder.setPositiveButton("네",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    del_temp = item;
 
-                Intent intent = new Intent(AlbumActivity.this, DogInfoActivity.class);
-                intent.putExtra("dogitem", item);
-                intent.putExtra("call", "album");
+                                    fm.deleteAlbumFile(del_temp, albumlist);
+                                    albumlist.remove(del_temp);
 
-                startActivity(intent);
+                                    adapter_myAlbum.setList(albumlist);
+                                    adapter_myAlbum.notifyDataSetChanged();
+                                    Toast.makeText(getApplicationContext(),"Deleted",Toast.LENGTH_LONG).show();
+                                    del_temp = null;
+                                    select.setVisibility(View.INVISIBLE);
 
+                                    if(checkEmpty())
+                                        setContentView(R.layout.activity_empty_album);
+                                }
+                            });
+                    builder.setNegativeButton("아니요",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    select.setVisibility(View.INVISIBLE);
+                                    del_temp = null;
+                                }
+                            });
+                    builder.show();
+
+
+                } else {
+                    DogInfo item = (DogInfo) parent.getItemAtPosition(position);
+                    Intent intent = new Intent(AlbumActivity.this, DogInfoActivity.class);
+                    intent.putExtra("dogitem", item);
+                    intent.putExtra("call", "album");
+
+                    startActivity(intent);
+                }
             }
         });
 
         //새로고침
         refreshLayout = findViewById(R.id.swipelayout);
         refreshLayout.setOnRefreshListener(this);
+    }
+
+    public boolean checkEmpty(){
+        if(albumlist.size() == 0 || albumlist == null)
+            return true;
+        return false;
     }
 
     //새로고침
@@ -119,13 +164,14 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete :
-                if(del_mode) {
+                if(del_mode) { //선택한 아이템 삭제
                     del_mode = false;
                     item.setIcon(getDrawable(R.drawable.icon_delete));
                 }
-                else {
+                else { //삭제 모드로 변경
                     del_mode = true;
                     item.setIcon(getDrawable(R.drawable.icon_check));
+                    del_temp = null;
                 }
                 return true ;
             default :

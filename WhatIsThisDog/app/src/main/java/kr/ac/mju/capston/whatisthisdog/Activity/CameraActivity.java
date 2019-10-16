@@ -189,7 +189,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         // 텍스트 파일에 정보 저장
         fm = new FileManager(this,"album.txt");
         DogInfo saveItem = new DogInfo(DogInfo.getRandomData(fileName));
-        fm.saveItemsToFile(saveItem, false) ;
+        fm.saveItemsToFile(saveItem) ;
 
 
         //정보보기로 이동

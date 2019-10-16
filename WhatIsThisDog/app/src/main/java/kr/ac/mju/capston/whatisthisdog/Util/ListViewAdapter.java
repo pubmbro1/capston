@@ -70,9 +70,6 @@ public class ListViewAdapter extends BaseAdapter {
 
         albumViewHolder viewHolder;
 
-        DogInfo item = dogInfoList.get(position);
-        String photoPath = FileManager.getPath() + "/" + item.getDogImage();
-
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(itemResId, parent, false);
@@ -83,12 +80,17 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder.name = (TextView) convertView.findViewById(R.id.album_name) ;
             viewHolder.matchRate = (TextView) convertView.findViewById(R.id.album_rate) ;
             viewHolder.date = (TextView) convertView.findViewById(R.id.album_date) ;
+            viewHolder.select = (ImageView) convertView.findViewById(R.id.select);
 
             convertView.setTag(viewHolder);
         }
         else{
             viewHolder = (albumViewHolder)convertView.getTag();
         }
+
+
+        DogInfo item = dogInfoList.get(position);
+        String photoPath = FileManager.getPath() + "/" + item.getDogImage();
 
         viewHolder.iconImageView.setClipToOutline(true);
         Glide.with(context)
@@ -128,7 +130,6 @@ public class ListViewAdapter extends BaseAdapter {
                     .load(resId)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .override(viewHolder.iconImageView.getWidth())
                     .centerCrop()
                     .into(viewHolder.iconImageView);
 
@@ -161,6 +162,7 @@ public class ListViewAdapter extends BaseAdapter {
         public TextView name;
         public TextView matchRate;
         public TextView date;
+        public ImageView select;
     }
 
     public class rankViewHolder{

@@ -57,7 +57,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
                 android:layout_weight="1"
+                android:background="@drawable/bg_roundborder_puppybrown_shadow"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="30dp"
@@ -115,12 +117,6 @@
 
             </LinearLayout>
 
-            <View
-                android:id="@+id/view0"
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/puppyBrown" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -141,6 +137,8 @@
                 android:id="@+id/view1"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
                 android:background="@color/puppyBrown" />
 
             <LinearLayout

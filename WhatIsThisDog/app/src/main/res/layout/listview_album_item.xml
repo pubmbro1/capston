@@ -16,12 +16,15 @@
         android:paddingRight="7dp"
         android:paddingBottom="7dp">
 
-        <View
+        <ImageView
             android:id="@+id/select"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#6D000000"
-            android:visibility="invisible" />
+            android:background="@drawable/bg_roundsolid_black"
+            android:focusable="false"
+            android:padding="60dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/icon_select" />
 
         <ImageView
             android:id="@+id/albumDogImageView"

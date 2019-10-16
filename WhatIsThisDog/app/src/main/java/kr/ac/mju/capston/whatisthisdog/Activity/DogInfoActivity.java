@@ -69,7 +69,6 @@ public class DogInfoActivity extends BaseActivity {
                     .load(photoPath)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .override(imageView.getWidth())
                     .centerCrop()
                     .into(imageView);
         }
@@ -81,7 +80,6 @@ public class DogInfoActivity extends BaseActivity {
                     .load(resId)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .override(imageView.getWidth())
                     .centerCrop()
                     .into(imageView);
         }
@@ -91,7 +89,6 @@ public class DogInfoActivity extends BaseActivity {
                     .load(photoPath)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .override(imageView.getWidth())
                     .centerCrop()
                     .into(imageView);
         }

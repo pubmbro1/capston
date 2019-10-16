@@ -40,7 +40,7 @@ public class FileManager {
     }
 
     //파일에 쓰기
-    public void saveItemsToFile(DogInfo item, boolean new_file_write) {
+    public void saveItemsToFile(DogInfo item) {
 
         FileWriter fw = null ;
         BufferedWriter bufwr = null ;
@@ -48,15 +48,11 @@ public class FileManager {
         try {
             // open file.
 
-            if(new_file_write)
-                fw = new FileWriter(file,false);
-            else {
-                //존재하면 이어쓰기
-                if (file.exists())
-                    fw = new FileWriter(file, true);
-                else
-                    fw = new FileWriter(file, false);
-            }
+            //존재하면 이어쓰기
+            if (file.exists())
+                fw = new FileWriter(file, true);
+            else
+                fw = new FileWriter(file, false);
 
             bufwr = new BufferedWriter(fw) ;
 
@@ -186,21 +182,25 @@ public class FileManager {
 
 
     //전체 리스트와 삭제할 item을 넘겨받아 item 삭제, file 변경
-    public void deleteAlbumFile(DogInfo dogInfo, ArrayList<DogInfo> albumlist){
+    public void deleteAlbumFile(DogInfo item, ArrayList<DogInfo> albumlist){
         //이미지 삭제
-        String fileName = dogInfo.getDogImage();
+        String fileName = item.getDogImage();
         File imageFile = new File(path, fileName);
         imageFile.delete();
 
         //리스트에서 item 삭제
-        ArrayList<DogInfo> resultList = albumlist;
-        if(!resultList.remove(dogInfo));
-            Log.d("deleteAlbumFile" , "아이템 삭제 오류" + dogInfo.getName());
+        ArrayList<DogInfo> resultList = new ArrayList<>();
+        resultList.addAll(albumlist);
+
+        if( !(resultList.remove(item)))
+            Log.d("deleteAlbumFile" , "아이템 삭제 오류" + item.getSaveData());
+
         Collections.reverse(resultList);
 
         //변경된 리스트 다시 쓰기
-        for( DogInfo item : resultList){
-            saveItemsToFile(item, true);
+        file.delete(); // 기존 album.txt 삭제
+        for( DogInfo dog : resultList){
+            saveItemsToFile(dog);
         }
     }
 
