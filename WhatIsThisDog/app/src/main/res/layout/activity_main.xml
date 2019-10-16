@@ -18,8 +18,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_roundsolid_soft"
-            android:gravity="center">
+            android:background="@drawable/bg_roundsolid_soft_shadow"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
 
             <Button
                 android:id="@+id/b_camera"
@@ -61,7 +63,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_soft">
+            android:background="@drawable/bg_roundsolid_soft_shadow"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
 
             <Button
                 android:id="@+id/b_album"
@@ -92,7 +96,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginBottom="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_soft">
+            android:background="@drawable/bg_roundsolid_soft_shadow"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
 
             <Button
                 android:id="@+id/b_matching"
@@ -131,7 +137,9 @@
             android:layout_marginTop="5dp"
             android:layout_marginRight="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_soft">
+            android:background="@drawable/bg_roundsolid_soft_shadow"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
 
             <Button
                 android:id="@+id/b_dictionary"
@@ -161,7 +169,9 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="5"
-            android:background="@drawable/bg_roundsolid_soft">
+            android:background="@drawable/bg_roundsolid_soft_shadow"
+            android:paddingRight="10dp"
+            android:paddingBottom="10dp">
 
             <Button
                 android:id="@+id/b_category"

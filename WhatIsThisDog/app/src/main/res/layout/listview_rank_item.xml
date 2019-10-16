@@ -14,10 +14,13 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="30dp"
         android:layout_marginBottom="15dp"
-        android:background="@drawable/bg_roundsolid_soft"
+        android:background="@drawable/bg_roundsolid_soft_shadow"
         android:gravity="center|left"
         android:orientation="vertical"
-        android:padding="5dp"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="15dp"
         android:weightSum="10">
 
         <ImageView

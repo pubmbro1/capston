@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 
@@ -79,24 +80,23 @@ public class ListViewAdapter extends BaseAdapter {
             viewHolder = new albumViewHolder();
 
             viewHolder.iconImageView = (ImageView) convertView.findViewById(R.id.albumDogImageView) ;
-            viewHolder.iconImageView.setClipToOutline(true);
             viewHolder.name = (TextView) convertView.findViewById(R.id.album_name) ;
             viewHolder.matchRate = (TextView) convertView.findViewById(R.id.album_rate) ;
             viewHolder.date = (TextView) convertView.findViewById(R.id.album_date) ;
-
-            Glide.with(context)
-                    .load(photoPath)
-                    .placeholder(R.drawable.test_puppy_icon)
-                    .error(R.drawable.icon_sadpuppy)
-                    .override(viewHolder.iconImageView.getWidth())
-                    .centerCrop()
-                    .into(viewHolder.iconImageView);
 
             convertView.setTag(viewHolder);
         }
         else{
             viewHolder = (albumViewHolder)convertView.getTag();
         }
+
+        viewHolder.iconImageView.setClipToOutline(true);
+        Glide.with(context)
+                .load(photoPath)
+                .placeholder(R.drawable.test_puppy_icon)
+                .error(R.drawable.icon_sadpuppy)
+                .centerCrop()
+                .into(viewHolder.iconImageView);
 
         viewHolder.name.setText(item.getName());
         viewHolder.matchRate.setText(item.getMatchRate() + "%");
