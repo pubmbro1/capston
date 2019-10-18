@@ -17,7 +17,6 @@ import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
 
 public class FileManager {
 
-    public static final int C_SIZE = 5; //카테고리 5개
     private static final File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS + "/WhatIsThisDog");
     private File file;
     private Context context;
@@ -107,79 +106,6 @@ public class FileManager {
 
         return resultList;
     }
-
-    //카테고리 저장
-    public void saveCategory(ArrayList<Integer> categorylist){
-        FileWriter fw = null ;
-        BufferedWriter bufwr = null ;
-
-        try {
-            // open file.
-            fw = new FileWriter(file,false);
-            bufwr = new BufferedWriter(fw) ;
-
-            for(int i=0;i<categorylist.size();i++){
-                bufwr.write(categorylist.get(i).toString());
-                bufwr.newLine();
-            }
-
-            bufwr.flush() ;
-
-        } catch (Exception e) {
-            e.printStackTrace() ;
-        }
-
-        try {
-            // close file.
-            if (bufwr != null) {
-                bufwr.close();
-            }
-
-            if (fw != null) {
-                fw.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace() ;
-        }
-    }
-
-    //카테고리 불러오기
-    public ArrayList<Integer> loadCategory(){
-        FileReader fr = null ;
-        BufferedReader bufrd = null ;
-        String str;
-        ArrayList<Integer> categoryList = new ArrayList<>();
-
-
-        //첫 실행 - category.txt 없는 경우
-        if(!file.exists()){
-            for(int i=0;i<C_SIZE;i++) {  //카테고리 갯수만큼 (flag 제외)
-                //categoryList를 카테고리,progress=2로 채움 (카테고리 이름 string.xml 저장 및 변경)
-                categoryList.add(2);
-            }
-            saveCategory(categoryList);
-
-            return categoryList;
-        }
-
-        try {
-            // open file.
-            fr = new FileReader(file) ;
-            bufrd = new BufferedReader(fr) ;
-
-            while ((str = bufrd.readLine()) != null) {
-                categoryList.add(Integer.valueOf(str));
-            }
-
-            bufrd.close() ;
-            fr.close() ;
-        } catch (Exception e) {
-            e.printStackTrace() ;
-        }
-
-        return categoryList;
-    }
-
 
     //전체 리스트와 삭제할 item을 넘겨받아 item 삭제, file 변경
     public void deleteAlbumFile(DogInfo item, ArrayList<DogInfo> albumlist){

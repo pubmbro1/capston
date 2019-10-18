@@ -1,19 +1,17 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.ac.mju.capston.whatisthisdog.Util.DictSectioningAdapter;
 import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
 import kr.ac.mju.capston.whatisthisdog.R;
-import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
+import kr.ac.mju.capston.whatisthisdog.Util.DictSectioningAdapter;
 
 public class DictActivity extends BaseActivity {
 

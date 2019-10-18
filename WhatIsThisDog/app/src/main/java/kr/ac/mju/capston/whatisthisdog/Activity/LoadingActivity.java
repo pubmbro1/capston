@@ -1,7 +1,5 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;

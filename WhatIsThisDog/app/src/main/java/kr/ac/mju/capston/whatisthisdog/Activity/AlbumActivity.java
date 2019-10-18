@@ -1,30 +1,25 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
-import kr.ac.mju.capston.whatisthisdog.Util.ListViewAdapter;
-import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 import kr.ac.mju.capston.whatisthisdog.R;
+import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
+import kr.ac.mju.capston.whatisthisdog.Util.ListViewAdapter;
 
 public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 

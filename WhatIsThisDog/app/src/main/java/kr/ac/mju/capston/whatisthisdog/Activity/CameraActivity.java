@@ -1,7 +1,5 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,8 +21,8 @@ import java.io.IOException;
 import java.util.List;
 
 import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
-import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 import kr.ac.mju.capston.whatisthisdog.R;
+import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 
 public class CameraActivity extends BaseActivity implements SurfaceHolder.Callback{
 

@@ -1,40 +1,32 @@
-/*  (1.1)   - 10.09 : 사전 구현
-*
-* */
 package kr.ac.mju.capston.whatisthisdog.Activity;
-
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.core.app.ActivityCompat;
 
-import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 import kr.ac.mju.capston.whatisthisdog.R;
+import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";
 
-    private Button b_camera;
-    private Button b_matching;
-    private Button b_dictionary;
-    private Button b_album;
-    private Button b_category;
+    private ImageButton b_camera;
+    private ImageButton b_matching;
+    private ImageButton b_dictionary;
+    private ImageButton b_album;
+    private ImageButton b_category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,12 +94,12 @@ public class MainActivity extends BaseActivity {
         if(!FileManager.getPath().mkdir()){
             Log.d("dir create" , "fail");
         }
-        if(!new FileManager(this,"category.txt").getFileExists()){
+        SharedPreferences pref = getSharedPreferences("category", MODE_PRIVATE);
+        if(!pref.contains("init")){
             Intent intent = new Intent(MainActivity.this, CategoryActivity.class);
             startActivity(intent);
         }
     }
-
 
     /* 권한 처리 */
     @Override
@@ -120,26 +112,6 @@ public class MainActivity extends BaseActivity {
             finish();
         }
     }
-
-    /* 액티비티 반환 처리
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent returnIntent) {
-        super.onActivityResult(requestCode, resultCode, returnIntent);
-        Log.e("Main Activity", "onActivityResult : " + resultCode);
-        switch (requestCode){
-            case ALBUM_LIST_SEND: // 앨범 액티비티로 보냈던 요청
-                if (resultCode == RESULT_OK) { // 결과가 OK = 필요없음
-                }else{
-                    dataSet.setAlbumlist((ArrayList<DogInfo>)returnIntent.getSerializableExtra("albumlist"));
-                    //삭제시 데이터 업데이트 코드 추가
-                }
-                break;
-            case CATEGORY_LIST_SEND:
-                dataSet.setCategorylist((HashMap<String,Boolean>)returnIntent.getSerializableExtra("categorylist"));
-                break;
-        }
-    }
-     */
 }
 
 
