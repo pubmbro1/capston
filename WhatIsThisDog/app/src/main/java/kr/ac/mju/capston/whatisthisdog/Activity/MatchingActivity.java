@@ -19,8 +19,6 @@ public class MatchingActivity extends BaseActivity {
     private ListViewAdapter adapter_rank;
     private ArrayList<DogInfo> ranklist;
 
-    private FileManager fm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

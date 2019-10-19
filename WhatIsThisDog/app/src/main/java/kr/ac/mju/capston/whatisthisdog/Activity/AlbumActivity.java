@@ -81,8 +81,8 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
                                 public void onClick(DialogInterface dialog, int which) {
                                     del_temp = item;
 
-                                    fm.deleteAlbumFile(del_temp, albumlist);
                                     albumlist.remove(del_temp);
+                                    fm.deleteAlbumFile(del_temp, albumlist);
 
                                     adapter_myAlbum.setList(albumlist);
                                     adapter_myAlbum.notifyDataSetChanged();
@@ -101,6 +101,7 @@ public class AlbumActivity extends BaseActivity implements SwipeRefreshLayout.On
                                     del_temp = null;
                                 }
                             });
+                    builder.setCancelable(false);
                     builder.show();
 
 

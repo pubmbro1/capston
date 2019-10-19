@@ -110,23 +110,27 @@ public class FileManager {
     //전체 리스트와 삭제할 item을 넘겨받아 item 삭제, file 변경
     public void deleteAlbumFile(DogInfo item, ArrayList<DogInfo> albumlist){
         //이미지 삭제
-        String fileName = item.getDogImage();
-        File imageFile = new File(path, fileName);
-        imageFile.delete();
+        try {
+            String fileName = item.getDogImage();
+            File imageFile = new File(path, fileName);
+            imageFile.delete();
 
-        //리스트에서 item 삭제
-        ArrayList<DogInfo> resultList = new ArrayList<>();
-        resultList.addAll(albumlist);
+            //리스트에서 item 삭제
+            ArrayList<DogInfo> resultList = new ArrayList<>();
+            resultList.addAll(albumlist);
 
-        if( !(resultList.remove(item)))
-            Log.d("deleteAlbumFile" , "아이템 삭제 오류" + item.getSaveData());
+            resultList.remove(item);
 
-        Collections.reverse(resultList);
+            Collections.reverse(resultList);
 
-        //변경된 리스트 다시 쓰기
-        file.delete(); // 기존 album.txt 삭제
-        for( DogInfo dog : resultList){
-            saveItemsToFile(dog);
+            //변경된 리스트 다시 쓰기
+            file.delete(); // 기존 album.txt 삭제
+            for (DogInfo dog : resultList) {
+                saveItemsToFile(dog);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            Log.d("삭제", e.getMessage());
         }
     }
 
