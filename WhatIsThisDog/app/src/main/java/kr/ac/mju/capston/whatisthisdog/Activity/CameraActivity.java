@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
@@ -153,9 +156,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
     public void saveImage(byte[] data, Camera camera){
 
         //이미지의 너비와 높이 결정
-        //int w = camera.getParameters().getPictureSize().width;
-        //int h = camera.getParameters().getPictureSize().height;
-
         int w = camera.getParameters().getPictureSize().width;
         int h = camera.getParameters().getPictureSize().height;
 
@@ -165,16 +165,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         Bitmap bitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options);
 
         //matrix.postRotate(orientation);
-        //bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, null, true);
-        bitmap =  Bitmap.createBitmap(bitmap, 0, 0, 224, 224, null, true);
-
-
-        //모델 이용 계산
-        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
-        toGrayscale(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream1);
-        byte[] inputDataByte = stream1.toByteArray();
-        String dog_name = calRate(convert(inputDataByte));
-
+        bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, null, true);
 
         //bitmap 을  byte array 로 변환
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -206,8 +197,20 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
             e.printStackTrace();
         }
 
+        Log.d("모델", "시작");
+        Bitmap bitmap_input = Bitmap.createScaledBitmap(bitmap, 224,224, false);
+        Log.d("모델 비트맵 인풋", String.valueOf(bitmap_input));
+        float[][][] input_data = getImageTo3dArr(bitmap_input);
+        Log.d("모델 배열 인풋", String.valueOf(input_data[2][2][1]));
 
+        try {
+            calRate(input_data);
+        }catch(Exception e){
+            Log.d("모델 - catch", e.getMessage());
+        }
 
+        String dog_name = "test";
+        Log.d("모델", "끝");
 
         // 텍스트 파일에 정보 저장
         fm = new FileManager(this,"album.txt");
@@ -223,50 +226,53 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         startActivity(intent);
         finish();
     }
-    public int[] convert(byte buf[]) {
-        int intArr[] = new int[buf.length / 4];
-        int offset = 0;
-        for(int i = 0; i < intArr.length; i++) {
-            intArr[i] = (buf[3 + offset] & 0xFF) | ((buf[2 + offset] & 0xFF) << 8) |
-                    ((buf[1 + offset] & 0xFF) << 16) | ((buf[0 + offset] & 0xFF) << 24);
-            offset += 4;
+
+    public float[][][] getImageTo3dArr(Bitmap image){
+        float[][][] data = new float[224][224][3];
+
+        Log.d("모델 - 변환", String.valueOf(image.getByteCount()));
+        Log.d("모델 - 변환", String.valueOf(image.getWidth()));
+        Log.d("모델 - 변환", String.valueOf(image.getHeight()));
+
+        for(int x = 0; x < image.getWidth(); x++){
+            for(int y = 0; y < image.getHeight(); y++){
+                int px = image.getPixel(x,y);
+
+
+                float red = ((px >> 16) & 0xFF) / (float) 255.0;
+                float green = ((px >> 8) & 0xFF) / (float)255;
+                float blue = (px & 0xFF) / (float)255;
+
+                data[x][y][0] = red;
+                data[x][y][1] = green;
+                data[x][y][2] = blue;
+            }
         }
-        return intArr;
-    }
-    public Bitmap toGrayscale(Bitmap bmpOriginal)
-    {
-        int width, height;
-        height = bmpOriginal.getHeight();
-        width = bmpOriginal.getWidth();
 
-        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(bmpGrayscale);
-        Paint paint = new Paint();
-        ColorMatrix cm = new ColorMatrix();
-        cm.setSaturation(0);
-        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-        paint.setColorFilter(f);
-        c.drawBitmap(bmpOriginal, 0, 0, paint);
-        return bmpGrayscale;
+        Log.d("모델 - 변환" , "변환 완료");
+        return data;
     }
 
-    public String calRate(int[] input){
-        Interpreter tflite = getTfliteInterpreter("xception_to_lite.tflite");
-        int[] output = new int[120];
+    public String calRate(float[][][] input){
+        Log.d("모델 - tf load start", "");
 
-        tflite.run(input, output);
-        if(output == null) Log.d("모델 아웃풋" , "null");
+        Interpreter model = getTfliteInterpreter("xception_to_lite.tflite");
+        float[][] output = new float[1][120];
+
+        Log.d("모델 - tf load end", "");
+        model.run(input, output);
+        Log.d("모델 - 아웃풋", String.valueOf(output[1]));
 
         double max = 0;
         int index = 0;
         for(int i=0;i<120;i++){
-            if(output[i] > index){
-                max = output[i];
+            if(output[0][i] > index){
+                max = output[0][i];
                 index = i;
             }
         }
 
-        return "Dog index : " + String.valueOf(index) + "\n";
+        return "Dog index : " + String.valueOf(index);
 
     }
     // 모델 파일 인터프리터를 생성하는 공통 함수
