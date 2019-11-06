@@ -1,8 +1,14 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
+import android.graphics.Paint;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,14 +21,19 @@ import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
 import java.util.List;
 
 import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
 import kr.ac.mju.capston.whatisthisdog.R;
 import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
+
+import org.tensorflow.lite.Interpreter;
 
 public class CameraActivity extends BaseActivity implements SurfaceHolder.Callback{
 
@@ -142,6 +153,9 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
     public void saveImage(byte[] data, Camera camera){
 
         //이미지의 너비와 높이 결정
+        //int w = camera.getParameters().getPictureSize().width;
+        //int h = camera.getParameters().getPictureSize().height;
+
         int w = camera.getParameters().getPictureSize().width;
         int h = camera.getParameters().getPictureSize().height;
 
@@ -151,7 +165,16 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         Bitmap bitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options);
 
         //matrix.postRotate(orientation);
-        bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, null, true);
+        //bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, null, true);
+        bitmap =  Bitmap.createBitmap(bitmap, 0, 0, 224, 224, null, true);
+
+
+        //모델 이용 계산
+        ByteArrayOutputStream stream1 = new ByteArrayOutputStream();
+        toGrayscale(bitmap).compress(Bitmap.CompressFormat.JPEG, 100, stream1);
+        byte[] inputDataByte = stream1.toByteArray();
+        String dog_name = calRate(convert(inputDataByte));
+
 
         //bitmap 을  byte array 로 변환
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -184,9 +207,12 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         }
 
 
+
+
         // 텍스트 파일에 정보 저장
         fm = new FileManager(this,"album.txt");
         DogInfo saveItem = new DogInfo(DogInfo.getRandomData(fileName));
+        saveItem.setName(dog_name);
         fm.saveItemsToFile(saveItem) ;
 
 
@@ -196,5 +222,71 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         intent.putExtra("call", "camera");
         startActivity(intent);
         finish();
+    }
+    public int[] convert(byte buf[]) {
+        int intArr[] = new int[buf.length / 4];
+        int offset = 0;
+        for(int i = 0; i < intArr.length; i++) {
+            intArr[i] = (buf[3 + offset] & 0xFF) | ((buf[2 + offset] & 0xFF) << 8) |
+                    ((buf[1 + offset] & 0xFF) << 16) | ((buf[0 + offset] & 0xFF) << 24);
+            offset += 4;
+        }
+        return intArr;
+    }
+    public Bitmap toGrayscale(Bitmap bmpOriginal)
+    {
+        int width, height;
+        height = bmpOriginal.getHeight();
+        width = bmpOriginal.getWidth();
+
+        Bitmap bmpGrayscale = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas c = new Canvas(bmpGrayscale);
+        Paint paint = new Paint();
+        ColorMatrix cm = new ColorMatrix();
+        cm.setSaturation(0);
+        ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
+        paint.setColorFilter(f);
+        c.drawBitmap(bmpOriginal, 0, 0, paint);
+        return bmpGrayscale;
+    }
+
+    public String calRate(int[] input){
+        Interpreter tflite = getTfliteInterpreter("xception_to_lite.tflite");
+        int[] output = new int[120];
+
+        tflite.run(input, output);
+        if(output == null) Log.d("모델 아웃풋" , "null");
+
+        double max = 0;
+        int index = 0;
+        for(int i=0;i<120;i++){
+            if(output[i] > index){
+                max = output[i];
+                index = i;
+            }
+        }
+
+        return "Dog index : " + String.valueOf(index) + "\n";
+
+    }
+    // 모델 파일 인터프리터를 생성하는 공통 함수
+    // loadModelFile 함수에 예외가 포함되어 있기 때문에 반드시 try, catch 블록이 필요하다.
+    private Interpreter getTfliteInterpreter(String modelPath) {
+        try {
+            return new Interpreter(loadModelFile(CameraActivity.this, modelPath));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private MappedByteBuffer loadModelFile(Activity activity, String modelPath) throws IOException {
+        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(modelPath);
+        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
+        FileChannel fileChannel = inputStream.getChannel();
+        long startOffset = fileDescriptor.getStartOffset();
+        long declaredLength = fileDescriptor.getDeclaredLength();
+        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
     }
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
 import kr.ac.mju.capston.whatisthisdog.R;
-import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
 import kr.ac.mju.capston.whatisthisdog.Util.ListViewAdapter;
 
 public class MatchingActivity extends BaseActivity {
