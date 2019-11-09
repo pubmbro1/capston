@@ -1,6 +1,8 @@
 package kr.ac.mju.capston.whatisthisdog.Util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
@@ -114,6 +116,9 @@ public class FileManager {
             String fileName = item.getDogImage();
             File imageFile = new File(path, fileName);
             imageFile.delete();
+
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            context.sendBroadcast(mediaScanIntent);
 
             //리스트에서 item 삭제
             ArrayList<DogInfo> resultList = new ArrayList<>();

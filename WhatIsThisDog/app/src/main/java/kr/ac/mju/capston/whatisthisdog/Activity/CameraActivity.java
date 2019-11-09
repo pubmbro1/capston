@@ -197,26 +197,22 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
             e.printStackTrace();
         }
 
-        Log.d("모델", "시작");
         Bitmap bitmap_input = Bitmap.createScaledBitmap(bitmap, 224,224, false);
-        Log.d("모델 비트맵 인풋", String.valueOf(bitmap_input));
-        float[][][] input_data = getImageTo3dArr(bitmap_input);
-        Log.d("모델 배열 인풋", String.valueOf(input_data[2][2][1]));
+        float[][][][] input_data = getImageTo3dArr(bitmap_input);
 
+        String dog_name = "default";
         try {
-            calRate(input_data);
+            dog_name = calRate(input_data);
         }catch(Exception e){
+            e.printStackTrace();
             Log.d("모델 - catch", e.getMessage());
         }
-
-        String dog_name = "test";
-        Log.d("모델", "끝");
 
         // 텍스트 파일에 정보 저장
         fm = new FileManager(this,"album.txt");
         DogInfo saveItem = new DogInfo(DogInfo.getRandomData(fileName));
         saveItem.setName(dog_name);
-        fm.saveItemsToFile(saveItem) ;
+        fm.saveItemsToFile(saveItem);
 
 
         //정보보기로 이동
@@ -227,12 +223,8 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         finish();
     }
 
-    public float[][][] getImageTo3dArr(Bitmap image){
-        float[][][] data = new float[224][224][3];
-
-        Log.d("모델 - 변환", String.valueOf(image.getByteCount()));
-        Log.d("모델 - 변환", String.valueOf(image.getWidth()));
-        Log.d("모델 - 변환", String.valueOf(image.getHeight()));
+    public float[][][][] getImageTo3dArr(Bitmap image){
+        float[][][][] data = new float[1][224][224][3];
 
         for(int x = 0; x < image.getWidth(); x++){
             for(int y = 0; y < image.getHeight(); y++){
@@ -243,37 +235,31 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
                 float green = ((px >> 8) & 0xFF) / (float)255;
                 float blue = (px & 0xFF) / (float)255;
 
-                data[x][y][0] = red;
-                data[x][y][1] = green;
-                data[x][y][2] = blue;
+                data[0][x][y][0] = red;
+                data[0][x][y][1] = green;
+                data[0][x][y][2] = blue;
             }
         }
-
-        Log.d("모델 - 변환" , "변환 완료");
         return data;
     }
 
-    public String calRate(float[][][] input){
-        Log.d("모델 - tf load start", "");
-
+    public String calRate(float[][][][] input){
         Interpreter model = getTfliteInterpreter("xception_to_lite.tflite");
         float[][] output = new float[1][120];
 
-        Log.d("모델 - tf load end", "");
         model.run(input, output);
-        Log.d("모델 - 아웃풋", String.valueOf(output[1]));
 
-        double max = 0;
+        float max = 0;
         int index = 0;
         for(int i=0;i<120;i++){
-            if(output[0][i] > index){
+            if(output[0][i] > max){
                 max = output[0][i];
                 index = i;
             }
         }
+        index++;
 
-        return "Dog index : " + String.valueOf(index);
-
+        return "dog" + (index) + "일 확률 " + max;
     }
     // 모델 파일 인터프리터를 생성하는 공통 함수
     // loadModelFile 함수에 예외가 포함되어 있기 때문에 반드시 try, catch 블록이 필요하다.

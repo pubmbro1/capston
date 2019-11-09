@@ -51,6 +51,7 @@ public class DogInfo implements Serializable {
     }
 
     public String getSaveData() {
+        this.saveData = dogImage+"#"+name+"#"+physical+"#"+tendency+"#"+desc+"#"+matchRate;
         return saveData;
     }
 
