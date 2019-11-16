@@ -118,6 +118,7 @@ public class FileManager {
             imageFile.delete();
 
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            mediaScanIntent.setData(Uri.fromFile(imageFile));
             context.sendBroadcast(mediaScanIntent);
 
             //리스트에서 item 삭제

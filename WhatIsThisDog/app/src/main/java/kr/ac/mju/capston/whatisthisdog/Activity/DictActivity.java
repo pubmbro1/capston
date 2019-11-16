@@ -59,12 +59,10 @@ public class DictActivity extends BaseActivity {
     private void setNewDictionaryFile(){
 
         dictList = new ArrayList<>();
-        Log.d("dict_size" , String.valueOf(getResources().getInteger(R.integer.dict_size)));
+
         for(int i=0;i<getResources().getInteger(R.integer.dict_size);i++) {
             int resId = getResources().getIdentifier("dog" + String.valueOf(i), "string", getPackageName());
-            Log.d("dict_res" , String.valueOf(resId));
             String data = getResources().getString(resId);
-            Log.d("dict_data" , data);
             DogInfo newData = new DogInfo(data);
             dictList.add(newData);
         }
