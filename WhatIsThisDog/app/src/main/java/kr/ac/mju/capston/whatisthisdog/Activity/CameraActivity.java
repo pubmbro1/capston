@@ -1,42 +1,32 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
-import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.MappedByteBuffer;
-import java.nio.channels.FileChannel;
 import java.util.List;
 
 import kr.ac.mju.capston.whatisthisdog.Data.DogInfo;
 import kr.ac.mju.capston.whatisthisdog.R;
 import kr.ac.mju.capston.whatisthisdog.Util.FileManager;
-
-import org.tensorflow.lite.Interpreter;
+import kr.ac.mju.capston.whatisthisdog.Util.ModelConnector;
 
 public class CameraActivity extends BaseActivity implements SurfaceHolder.Callback{
 
@@ -47,16 +37,19 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
     private Camera.PictureCallback takePicture;
 
     private Button button;
-
     private FileManager fm;
+    private ModelConnector model;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActionBar(false);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_camera);
 
         mCameraView = (SurfaceView) findViewById(R.id.surfaceView);
+
         init();
 
         //임시 캡쳐 버튼
@@ -72,16 +65,17 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
 
         /*
         * 화면 캡쳐
-        * Bitmap 이미지 저장 부분 느림
-        * Bufferstream 이용 부분 추가?
         * */
         takePicture = new Camera.PictureCallback(){
             public void onPictureTaken(byte[] data, Camera camera){
                 Log.i("CameraActivity", "capture");
                 if(data != null){
                     try {
-                        saveImage(data, camera);
-                        Toast.makeText(CameraActivity.this, "저장 완료", Toast.LENGTH_SHORT).show();
+                        Object[] transfer = new Object[2];
+                        transfer[0] = data;
+                        transfer[1] = camera;
+                        DistDogTask ddt = new DistDogTask();
+                        ddt.execute(transfer);
 
                     }catch(Exception e){
                         Log.e("save image", "fail");
@@ -92,12 +86,23 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
     }
 
     private void init(){
-        mCamera = Camera.open();
+        mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
+/*
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, cameraInfo);
+        int mDisplayOrientation = this.getWindowManager().getDefaultDisplay().getRotation();
+
+        int orientation = calculatePreviewOrientation(cameraInfo, mDisplayOrientation);
+
+        mCamera.setDisplayOrientation(orientation);
+  */
         mCamera.setDisplayOrientation(90);
 
         mCameraHolder = mCameraView.getHolder();
         mCameraHolder.addCallback(this);
         mCameraHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
+        model = new ModelConnector(this);
     }
 
     //생성 시 호출
@@ -105,6 +110,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
     public void surfaceCreated(SurfaceHolder holder) {
         try {
             if (mCamera == null) {
+
                 mCamera.setPreviewDisplay(holder);
                 mCamera.startPreview();
             }
@@ -129,6 +135,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
 
         // 카메라 다시 세팅
         Camera.Parameters parameters = mCamera.getParameters();
+
         List<String> focusModes = parameters.getSupportedFocusModes();
         if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
@@ -153,7 +160,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         }
     }
 
-    public void saveImage(byte[] data, Camera camera){
+    public DogInfo saveImage(byte[] data, Camera camera){
 
         //이미지의 너비와 높이 결정
         int w = camera.getParameters().getPictureSize().width;
@@ -164,7 +171,15 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options);
 
-        //matrix.postRotate(orientation);
+        /*회전
+        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
+        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, cameraInfo);
+        int mDisplayOrientation = this.getWindowManager().getDefaultDisplay().getRotation();
+        int orientation = calculatePreviewOrientation(cameraInfo, mDisplayOrientation);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(orientation);
+        */
+
         bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, null, true);
 
         //bitmap 을  byte array 로 변환
@@ -177,7 +192,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         String fileName = null;
 
         try {
-            int nameIndex = 0;
             fileName = String.format("%s.jpg", System.currentTimeMillis());
             File outputFile = new File(FileManager.getPath(), fileName);
 
@@ -197,88 +211,85 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
             e.printStackTrace();
         }
 
-        Bitmap bitmap_input = Bitmap.createScaledBitmap(bitmap, 224,224, false);
-        float[][][][] input_data = getImageTo3dArr(bitmap_input);
-
-        String dog_name = "default";
-        try {
-            dog_name = calRate(input_data);
-        }catch(Exception e){
-            e.printStackTrace();
-            Log.d("모델 - catch", e.getMessage());
-        }
+        //강아지 판별
+        String dog_name = model.distDog(bitmap);
 
         // 텍스트 파일에 정보 저장
         fm = new FileManager(this,"album.txt");
-        DogInfo saveItem = new DogInfo(DogInfo.getRandomData(fileName));
-        saveItem.setName(dog_name);
-        fm.saveItemsToFile(saveItem);
+        DogInfo item = new DogInfo(DogInfo.getRandomData(fileName));
+        item.setName(dog_name);
+        fm.saveItemsToFile(item);
 
-
-        //정보보기로 이동
-        Intent intent = new Intent(CameraActivity.this, DogInfoActivity.class);
-        intent.putExtra("dogitem", saveItem);
-        intent.putExtra("call", "camera");
-        startActivity(intent);
-        finish();
+        return item;
     }
 
-    public float[][][][] getImageTo3dArr(Bitmap image){
-        float[][][][] data = new float[1][224][224][3];
 
-        for(int x = 0; x < image.getWidth(); x++){
-            for(int y = 0; y < image.getHeight(); y++){
-                int px = image.getPixel(x,y);
+    private class DistDogTask extends AsyncTask<Object, Void, DogInfo> {
 
+        ProgressDialog asyncDialog = new ProgressDialog(CameraActivity.this);
 
-                float red = ((px >> 16) & 0xFF) / (float) 255.0;
-                float green = ((px >> 8) & 0xFF) / (float)255;
-                float blue = (px & 0xFF) / (float)255;
+        @Override
+        protected void onPreExecute() {
+            asyncDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            asyncDialog.setMessage("강아지 분석 중입니다..");
 
-                data[0][x][y][0] = red;
-                data[0][x][y][1] = green;
-                data[0][x][y][2] = blue;
-            }
+            // show dialog
+            asyncDialog.show();
+            super.onPreExecute();
         }
-        return data;
-    }
 
-    public String calRate(float[][][][] input){
-        Interpreter model = getTfliteInterpreter("xception_to_lite.tflite");
-        float[][] output = new float[1][120];
+        @Override
+        protected DogInfo doInBackground(Object... arg) {
+            byte[] data = (byte[]) arg[0];
+            Camera camera = (Camera) arg[1];
 
-        model.run(input, output);
-
-        float max = 0;
-        int index = 0;
-        for(int i=0;i<120;i++){
-            if(output[0][i] > max){
-                max = output[0][i];
-                index = i;
-            }
+            return saveImage(data, camera);
         }
-        index++;
 
-        return "dog" + (index) + "일 확률 " + max;
-    }
-    // 모델 파일 인터프리터를 생성하는 공통 함수
-    // loadModelFile 함수에 예외가 포함되어 있기 때문에 반드시 try, catch 블록이 필요하다.
-    private Interpreter getTfliteInterpreter(String modelPath) {
-        try {
-            return new Interpreter(loadModelFile(CameraActivity.this, modelPath));
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+        @Override
+        protected void onPostExecute(DogInfo result) {
+            asyncDialog.dismiss();
 
-    private MappedByteBuffer loadModelFile(Activity activity, String modelPath) throws IOException {
-        AssetFileDescriptor fileDescriptor = activity.getAssets().openFd(modelPath);
-        FileInputStream inputStream = new FileInputStream(fileDescriptor.getFileDescriptor());
-        FileChannel fileChannel = inputStream.getChannel();
-        long startOffset = fileDescriptor.getStartOffset();
-        long declaredLength = fileDescriptor.getDeclaredLength();
-        return fileChannel.map(FileChannel.MapMode.READ_ONLY, startOffset, declaredLength);
+            Toast.makeText(CameraActivity.this, "저장 완료", Toast.LENGTH_SHORT).show();
+
+            //정보보기로 이동
+            Intent intent = new Intent(CameraActivity.this, DogInfoActivity.class);
+            intent.putExtra("dogitem", result);
+            intent.putExtra("call", "camera");
+            startActivity(intent);
+            finish();
+
+            super.onPostExecute(result);
+        }
     }
+/*
+    public static int calculatePreviewOrientation(Camera.CameraInfo info, int rotation) {
+        int degrees = 0;
+
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                degrees = 0;
+                break;
+            case Surface.ROTATION_90:
+                degrees = 90;
+                break;
+            case Surface.ROTATION_180:
+                degrees = 180;
+                break;
+            case Surface.ROTATION_270:
+                degrees = 270;
+                break;
+        }
+
+        int result;
+        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
+            result = (info.orientation + degrees) % 360;
+            result = (360 - result) % 360;  // compensate the mirror
+        } else {  // back-facing
+            result = (info.orientation - degrees + 360) % 360;
+        }
+
+        return result;
+    }
+ */
 }
