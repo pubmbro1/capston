@@ -96,7 +96,7 @@ public class DogInfoActivity extends BaseActivity {
         name.setText(item.getName());
         matchRate.setText(item.getMatchRate() + "%");
         tendency.setText(item.getTendency());
-        physical.setText(item.getPhysical());
+        physical.setText("수명 : " + item.getlifeSpan() + " / 무게 : " + item.getWeight() + " / 크기 : " + item.getSize());
         desc.setText(item.getDesc());
 
         back.bringToFront();

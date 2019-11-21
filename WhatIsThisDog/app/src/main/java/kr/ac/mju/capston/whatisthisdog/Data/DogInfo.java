@@ -5,7 +5,9 @@ import java.io.Serializable;
 public class DogInfo implements Serializable {
     private String dogImage; //사진 경로
     private String name; //품종
-    private String physical; //신체정보
+    private String lifeSpan; //수명
+    private String weight; //무게
+    private String size; //크기
     private String tendency; //성격
     private String desc; //상세정보
     private String matchRate; //일치율
@@ -15,15 +17,17 @@ public class DogInfo implements Serializable {
     public DogInfo(String saveData){
 
         this.saveData = saveData;
-        //Data format : 사진경로#품종#신체정보#성격#상세정보#일치율
+        //Data format : 사진경로#품종#수명#무게#크기#성격#상세정보#일치율
 
         String[] array = saveData.split("#");
         this.dogImage = array[0];
         this.name = array[1];
-        this.physical = array[2];
-        this.tendency = array[3];
-        this.desc = array[4];
-        this.matchRate = array[5];
+        this.lifeSpan = array[2];
+        this.weight = array[3];
+        this.size = array[4];
+        this.tendency = array[5];
+        this.desc = array[6];
+        this.matchRate = array[7];
     }
 
     public String getDogImage() {
@@ -51,7 +55,7 @@ public class DogInfo implements Serializable {
     }
 
     public String getSaveData() {
-        this.saveData = dogImage+"#"+name+"#"+physical+"#"+tendency+"#"+desc+"#"+matchRate;
+        this.saveData = dogImage+"#"+name+"#"+lifeSpan+"#"+weight+"#"+size+"#"+tendency+"#"+desc+"#"+matchRate;
         return saveData;
     }
 
@@ -59,13 +63,23 @@ public class DogInfo implements Serializable {
         this.saveData = saveData;
     }
 
-    public String getPhysical() {
-        return physical;
+    public String getlifeSpan() {
+        return lifeSpan;
     }
 
-    public void setPhysical(String physical) {
-        this.physical = physical;
+    public void setLifeSpan(String lifeSpan) { this.lifeSpan = lifeSpan; }
+
+    public String getWeight() {
+        return weight;
     }
+
+    public void setWeight(String weight) { this.weight = weight; }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String lifeSpan) { this.size = size; }
 
     public String getTendency() {
         return tendency;
@@ -89,7 +103,9 @@ public class DogInfo implements Serializable {
 
         String result = image;
         result += ("#" + "TEST DOG " + String.valueOf(time%10) );
-        result += ("#" + "physical" + String.valueOf(time%10) );
+        result += ("#" + "lifeSpan" + String.valueOf(time%10) );
+        result += ("#" + "weight" + String.valueOf(time%10) );
+        result += ("#" + "size" + String.valueOf(time%10) );
         result += ("#" + "tendency" + String.valueOf(time%10) );
         result += ("#" + "desc" + String.valueOf(time));
         result += ("#" +  String.valueOf(time%100));
