@@ -1,19 +1,23 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.hardware.Camera;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -52,7 +56,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         initActionBar(false);
         init();
 
-        //임시 캡쳐 버튼
         button = findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +65,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
                 }
             }
         });
-
 
         /*
         * 화면 캡쳐
@@ -91,19 +93,11 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_camera);
 
-        mCameraView = (SurfaceView) findViewById(R.id.surfaceView);
+        mCameraView = findViewById(R.id.surfaceView);
 
         mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-/*
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, cameraInfo);
-        int mDisplayOrientation = this.getWindowManager().getDefaultDisplay().getRotation();
-
-        int orientation = calculatePreviewOrientation(cameraInfo, mDisplayOrientation);
-
-        mCamera.setDisplayOrientation(orientation);
-  */
         mCamera.setDisplayOrientation(0);
+
 
         mCameraHolder = mCameraView.getHolder();
         mCameraHolder.addCallback(this);
@@ -153,6 +147,12 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         // 카메라 다시 세팅
         Camera.Parameters parameters = mCamera.getParameters();
 
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        Camera.Size size = getOptimalPreviewSize(parameters.getSupportedPreviewSizes(), point.x ,point.y);
+        parameters.setPreviewSize(size.width, size.height);
+
+
         List<String> focusModes = parameters.getSupportedFocusModes();
         if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
@@ -188,14 +188,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options);
 
-        /*회전
-        Camera.CameraInfo cameraInfo = new Camera.CameraInfo();
-        Camera.getCameraInfo(Camera.CameraInfo.CAMERA_FACING_BACK, cameraInfo);
-        int mDisplayOrientation = this.getWindowManager().getDefaultDisplay().getRotation();
-        int orientation = calculatePreviewOrientation(cameraInfo, mDisplayOrientation);
-        Matrix matrix = new Matrix();
-        matrix.postRotate(orientation);
-        */
 
         bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, null, true);
 
@@ -285,42 +277,13 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
             super.onPostExecute(result);
         }
     }
-/*
-    public static int calculatePreviewOrientation(Camera.CameraInfo info, int rotation) {
-        int degrees = 0;
-
-        switch (rotation) {
-            case Surface.ROTATION_0:
-                degrees = 0;
-                break;
-            case Surface.ROTATION_90:
-                degrees = 90;
-                break;
-            case Surface.ROTATION_180:
-                degrees = 180;
-                break;
-            case Surface.ROTATION_270:
-                degrees = 270;
-                break;
-        }
-
-        int result;
-        if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
-            result = (info.orientation + degrees) % 360;
-            result = (360 - result) % 360;  // compensate the mirror
-        } else {  // back-facing
-            result = (info.orientation - degrees + 360) % 360;
-        }
-
-        return result;
-    }
-
 
     private Camera.Size getOptimalPreviewSize(List<Camera.Size> sizes, int w, int h) {
         final double ASPECT_TOLERANCE = 0.1;
-        double targetRatio=(double)h / w;
+        double targetRatio = (double) h / w;
 
-        if (sizes == null) return null;
+        if (sizes == null)
+            return null;
 
         Camera.Size optimalSize = null;
         double minDiff = Double.MAX_VALUE;
@@ -328,8 +291,10 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         int targetHeight = h;
 
         for (Camera.Size size : sizes) {
-            double ratio = (double) size.width / size.height;
-            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            double ratio = (double) size.height / size.width;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE)
+                continue;
+
             if (Math.abs(size.height - targetHeight) < minDiff) {
                 optimalSize = size;
                 minDiff = Math.abs(size.height - targetHeight);
@@ -345,9 +310,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
                 }
             }
         }
+
         return optimalSize;
     }
-
-*/
-
 }
