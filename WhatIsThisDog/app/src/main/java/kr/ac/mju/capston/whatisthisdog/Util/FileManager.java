@@ -96,7 +96,7 @@ public class FileManager {
 
                 while ((str = bufrd.readLine()) != null) {
                     //리스트에 추가
-                    resultList.add(new DogInfo(str));
+                    resultList.add(new DogInfo(str, context) );
                 }
 
                 bufrd.close() ;

@@ -228,7 +228,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
 
         int resId = getResources().getIdentifier(dog_name, "string", getPackageName());
         String strData = getResources().getString(resId);
-        DogInfo item = new DogInfo(strData);
+        DogInfo item = new DogInfo(strData , this);
         item.setDogImage(fileName);
 
         Log.d("DogName", dog_name +"/" + fileName);
@@ -310,7 +310,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
                 }
             }
         }
-
         return optimalSize;
     }
 }

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -21,15 +22,12 @@ public class DictActivity extends BaseActivity {
 
     private RecyclerView listView;
     private DictSectioningAdapter adapter_Dict;
-    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActionBar(true, "Dictionary");
         setContentView(R.layout.activity_dict);
-
-        pref = getSharedPreferences("category", MODE_PRIVATE);
 
         if(savedInstanceState != null){
             dictList = (ArrayList<DogInfo>) savedInstanceState.getSerializable("dictList");
@@ -62,36 +60,27 @@ public class DictActivity extends BaseActivity {
     }
 
     private void setNewDictionaryFile(){
-
+        int dictSize = getResources().getInteger(R.integer.dict_size);
         dictList = new ArrayList<>();
-        int [] score = new int[120];
 
-        List<String> name = new ArrayList<>();
+        ArrayList<DogInfo> temp = new ArrayList<>();
+        TreeMap<String, Integer> tm = new TreeMap<>();
 
-        for(int i=0;i<getResources().getInteger(R.integer.dict_size);i++) {
+        for(int i=0;i<dictSize;i++) {
             int resId = getResources().getIdentifier("dog" + String.valueOf(i), "string", getPackageName());
             String data = getResources().getString(resId);
-            DogInfo newData = new DogInfo(data);
-            name.add(i, newData.getName());
+            DogInfo newData = new DogInfo(data, this);
+            temp.add(i, newData);
+
+            tm.put(newData.getName(), i);
         }
 
-        name.sort(null);
+        Iterator<String> iteratorKey = tm.keySet( ).iterator( );
 
-        for(int i=0;i<120;i++)
-            score[i] = pref.getInt(("score" + String.valueOf(i)), 0);
-
-        for(int i=0;i<120;i++)
-            Log.d("score " + i + ": ", Double.toString(Double.valueOf(score[i]/100.0)));
-
-        for(int i=0;i<getResources().getInteger(R.integer.dict_size);i++) {
-            for(int j=0;j<getResources().getInteger(R.integer.dict_size);j++) {
-                int resId = getResources().getIdentifier("dog" + String.valueOf(j), "string", getPackageName());
-                String data = getResources().getString(resId);
-                DogInfo newData = new DogInfo(data);
-                newData.setMatchRate(Double.toString(Double.valueOf(score[j]/100.0)));
-                if (newData.getName().equals(name.get(i)))
-                    dictList.add(newData);
-            }
+        while(iteratorKey.hasNext()) {
+            String name = iteratorKey.next();
+            Log.d("DictName" , name);
+            dictList.add(temp.get(tm.get(name)));
         }
     }
 

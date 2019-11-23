@@ -1,6 +1,13 @@
 package kr.ac.mju.capston.whatisthisdog.Data;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.Preference;
+import android.util.Log;
+
 import java.io.Serializable;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class DogInfo implements Serializable {
     private String dogImage; //사진 경로
@@ -14,7 +21,7 @@ public class DogInfo implements Serializable {
 
     private String saveData;
 
-    public DogInfo(String saveData){
+    public DogInfo(String saveData, Context context){
 
         this.saveData = saveData;
         //Data format : 사진경로#품종#수명#무게#크기#성격#상세정보#일치율
@@ -27,7 +34,9 @@ public class DogInfo implements Serializable {
         this.size = array[4];
         this.tendency = array[5];
         this.desc = array[6];
-        this.matchRate = array[7];
+
+
+        this.matchRate = "0";
     }
 
     public String getDogImage() {

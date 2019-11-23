@@ -36,9 +36,9 @@ public class MatchingActivity extends BaseActivity {
 
         //임시코드
         ranklist = new ArrayList<>();
-        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy")));
-        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy")));
-        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy")));
+        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy"), this) );
+        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy"), this) );
+        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy"), this) );
 
         init();
     }
