@@ -3,6 +3,7 @@ package kr.ac.mju.capston.whatisthisdog.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -13,7 +14,7 @@ import kr.ac.mju.capston.whatisthisdog.R;
 
 public class CategoryActivity extends BaseActivity {
 
-    private final int DEFAULT_VALUE = 2;
+    private final int DEFAULT_VALUE = 3;
 
     private int catSize;
 
@@ -61,7 +62,7 @@ public class CategoryActivity extends BaseActivity {
         for(int i=0;i<catSize;i++)
             editor.putInt(("category" + String.valueOf(i)), DEFAULT_VALUE);
         for(int i=0;i<120;i++)
-            editor.putInt(("score"+String.valueOf(i)), DEFAULT_VALUE);
+            editor.putInt(("score"+String.valueOf(i)), 0);
         editor.commit();
     }
 
@@ -77,7 +78,7 @@ public class CategoryActivity extends BaseActivity {
             //카테고리 리스트에서 value 값에 따라 seekbar 조절
             int seekBarID = getResources().getIdentifier( "seekBar" + String.valueOf(i), "id", getPackageName());
             seekBar = findViewById(seekBarID);
-            seekBar.setProgress(catValue);
+            seekBar.setProgress(catValue-1);
         }
     }
 
@@ -85,14 +86,17 @@ public class CategoryActivity extends BaseActivity {
         SharedPreferences.Editor editor = pref.edit();
 
         int[] catValues = new int[catSize];
+        double[] prefSims = new double[120];
+
         for(int i=0;i<catSize;i++){
             int seekBarID = getResources().getIdentifier( "seekBar" + String.valueOf(i), "id", getPackageName());
             seekBar = findViewById(seekBarID);
-            editor.putInt(("category" + String.valueOf(i)), seekBar.getProgress());
+            editor.putInt(("category" + String.valueOf(i)), seekBar.getProgress()+1);
 
             //사용자 점수 읽기
             catValues[i] = pref.getInt(("category" + String.valueOf(i)), DEFAULT_VALUE);
         }
+
 
         for(int i=0;i<120;i++){
             String scoreString = getString(getResources().getIdentifier( "score" + String.valueOf(i), "string", getPackageName()));
@@ -101,7 +105,7 @@ public class CategoryActivity extends BaseActivity {
 
             // 사용자 점수 읽기 => 위에서 수행
             // 알고리즘 생성
-            double prefSim = 0, gap = 0, bias;
+            double prefSim = 0, gap, bias;
             for(int j=0;j<catSize;j++){
                 bias = 0;
                 if(reverse_score[j]){
@@ -122,7 +126,25 @@ public class CategoryActivity extends BaseActivity {
             }
             // ex) 0.1234 => 1234로 저장 => 이후 사용시 /100.0하여 12.34(%)로 사용
             // SharedPreferences에 저장
-            editor.putInt(("score" + String.valueOf(i)), ((int)(prefSim/6*10000)));
+            prefSims[i] = (int)(prefSim/6*10000) / 100;
+        }
+        //minmax_scaler
+        //get min/max
+        double min = 100, max = 0;
+        for(int i=0;i<120-3;i++){
+            if(prefSims[i] > max)
+                max = prefSims[i];
+            if(prefSims[i] < min)
+                min = prefSims[i];
+        }
+
+        //rescale
+        for(int i=0;i<120-3;i++){
+            double scaled = (prefSims[i] - min) / ((max*0.8 + 100*0.2) - min);
+            editor.putInt(("score" + String.valueOf(i)), (int)(scaled*100));
+        }
+        for(int i=120-3;i<120;i++){
+            editor.putInt(("score" + String.valueOf(i)), 0);
         }
         editor.commit();
     }
