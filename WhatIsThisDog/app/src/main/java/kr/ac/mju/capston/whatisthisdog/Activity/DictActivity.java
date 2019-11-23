@@ -1,5 +1,6 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -20,13 +21,15 @@ public class DictActivity extends BaseActivity {
 
     private RecyclerView listView;
     private DictSectioningAdapter adapter_Dict;
-
+    private SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initActionBar(true, "Dictionary");
         setContentView(R.layout.activity_dict);
+
+        pref = getSharedPreferences("category", MODE_PRIVATE);
 
         if(savedInstanceState != null){
             dictList = (ArrayList<DogInfo>) savedInstanceState.getSerializable("dictList");
@@ -61,6 +64,7 @@ public class DictActivity extends BaseActivity {
     private void setNewDictionaryFile(){
 
         dictList = new ArrayList<>();
+        int [] score = new int[120];
 
         List<String> name = new ArrayList<>();
 
@@ -74,13 +78,17 @@ public class DictActivity extends BaseActivity {
         name.sort(null);
 
         for(int i=0;i<120;i++)
-            Log.d("name : ", name.get(i));
+            score[i] = pref.getInt(("score" + String.valueOf(i)), 0);
+
+        for(int i=0;i<120;i++)
+            Log.d("score " + i + ": ", Double.toString(Double.valueOf(score[i]/100.0)));
 
         for(int i=0;i<getResources().getInteger(R.integer.dict_size);i++) {
             for(int j=0;j<getResources().getInteger(R.integer.dict_size);j++) {
                 int resId = getResources().getIdentifier("dog" + String.valueOf(j), "string", getPackageName());
                 String data = getResources().getString(resId);
                 DogInfo newData = new DogInfo(data);
+                newData.setMatchRate(Double.toString(Double.valueOf(score[j]/100.0)));
                 if (newData.getName().equals(name.get(i)))
                     dictList.add(newData);
             }

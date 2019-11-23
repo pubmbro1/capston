@@ -3,6 +3,7 @@ package kr.ac.mju.capston.whatisthisdog.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -120,7 +121,8 @@ public class CategoryActivity extends BaseActivity {
                 prefSim += 1 - bias;
                 // ex) 0.1234 => 1234로 저장 => 이후 사용시 /100하여 12.34(%)로 사용
                 // SharedPreferences에 저장
-                editor_.putInt(("score" + String.valueOf(i)), (int)(prefSim/6)*10000);
+                editor_.putInt(("score" + String.valueOf(i)), (int)(((prefSim/6)*10000)));
+                Log.d("score not saved : ", Double.toString((int)((prefSim/6)*10000)));
             }
         }
         editor.commit();
