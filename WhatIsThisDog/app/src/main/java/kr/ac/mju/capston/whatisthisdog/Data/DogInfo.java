@@ -35,8 +35,11 @@ public class DogInfo implements Serializable {
         this.tendency = array[5];
         this.desc = array[6];
 
+        SharedPreferences pref = context.getSharedPreferences("category", MODE_PRIVATE);
+        String key = String.valueOf(Integer.parseInt(dogImage.replace("dog", "")) - 1);
+        key = "score" + key;
 
-        this.matchRate = "0";
+        this.matchRate = String.valueOf(pref.getInt(key, 00) / 100.0);
     }
 
     public String getDogImage() {

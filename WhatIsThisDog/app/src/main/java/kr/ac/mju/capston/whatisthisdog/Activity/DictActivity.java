@@ -79,7 +79,6 @@ public class DictActivity extends BaseActivity {
 
         while(iteratorKey.hasNext()) {
             String name = iteratorKey.next();
-            Log.d("DictName" , name);
             dictList.add(temp.get(tm.get(name)));
         }
     }

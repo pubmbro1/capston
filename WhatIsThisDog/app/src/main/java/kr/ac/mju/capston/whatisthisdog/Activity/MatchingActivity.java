@@ -1,6 +1,7 @@
 package kr.ac.mju.capston.whatisthisdog.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +17,7 @@ public class MatchingActivity extends BaseActivity {
 
     private ListView listView;
     private ListViewAdapter adapter_rank;
+    private SharedPreferences pref;
     private ArrayList<DogInfo> ranklist;
 
     @Override
@@ -24,6 +26,7 @@ public class MatchingActivity extends BaseActivity {
         initActionBar(true, "Matching");
         setContentView(R.layout.activity_matching);
 
+        pref = getSharedPreferences("category", MODE_PRIVATE);
 
         /* 매칭 알고리즘 구현시 수정
         fm = new FileManager(this, "rank.txt");
@@ -36,9 +39,32 @@ public class MatchingActivity extends BaseActivity {
 
         //임시코드
         ranklist = new ArrayList<>();
-        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy"), this) );
-        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy"), this) );
-        ranklist.add(new DogInfo(DogInfo.getRandomData("dict_test_puppy"), this) );
+        int [] score = new int[120];
+        int [] BestScoreIndex = {0, 1, 2};
+
+        for(int i=0;i<120;i++) {
+            score[i] = pref.getInt(("score" + String.valueOf(i)), 0);
+            if(i > 2) {
+                if ((score[BestScoreIndex[0]] / 100.0) < (score[i] / 100.0)) {
+                    BestScoreIndex[2] = BestScoreIndex[1];
+                    BestScoreIndex[1] = BestScoreIndex[0];
+                    BestScoreIndex[0] = i;
+                } else if ((score[BestScoreIndex[1]] / 100.0) < (score[i] / 100.0)) {
+                    BestScoreIndex[2] = BestScoreIndex[1];
+                    BestScoreIndex[1] = i;
+                } else if ((score[BestScoreIndex[2]] / 100.0) < (score[i] / 100.0)) {
+                    BestScoreIndex[2] = i;
+                }
+            }
+        }
+
+        for(int i=0;i<3;i++) {
+            int resId = getResources().getIdentifier("dog" + String.valueOf(BestScoreIndex[i]), "string", getPackageName());
+            String data = getResources().getString(resId);
+            DogInfo newData = new DogInfo(data, this);
+
+            ranklist.add(newData);
+        }
 
         init();
     }
