@@ -69,7 +69,7 @@ public class DogInfoActivity extends BaseActivity {
                     .load(photoPath)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .centerCrop()
+                    .fitCenter()
                     .into(imageView);
         }
         else if(called.equals("dict") || called.equals("match") ){
@@ -89,7 +89,7 @@ public class DogInfoActivity extends BaseActivity {
                     .load(photoPath)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .centerCrop()
+                    .fitCenter()
                     .into(imageView);
         }
 

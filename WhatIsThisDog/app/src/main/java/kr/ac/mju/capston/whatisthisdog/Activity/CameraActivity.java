@@ -189,10 +189,11 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         Bitmap bitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options);
 
+        //강아지 판별
+        String dog_name = model.distDog(bitmap);
 
         Matrix matrix = new Matrix();
         matrix.postRotate(90);
-
         bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
 
         //bitmap 을  byte array 로 변환
@@ -223,9 +224,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        //강아지 판별
-        String dog_name = model.distDog(bitmap);
 
         // 텍스트 파일에 정보 저장
         fm = new FileManager(this,"album.txt");
