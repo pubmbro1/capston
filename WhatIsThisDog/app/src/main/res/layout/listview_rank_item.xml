@@ -68,7 +68,9 @@
                 android:id="@+id/rank_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginBottom="10dp"
+                android:gravity="center"
                 android:text="TEST DOG NAME"
                 android:textColor="@color/mainTextColor"
                 android:textSize="20sp" />

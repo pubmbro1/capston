@@ -45,14 +45,14 @@ public class MatchingActivity extends BaseActivity {
         for(int i=0;i<120;i++) {
             score[i] = pref.getInt(("score" + String.valueOf(i)), 0);
             if(i > 2) {
-                if ((score[BestScoreIndex[0]] / 100.0) < (score[i] / 100.0)) {
+                if ((score[BestScoreIndex[0]] ) < (score[i] )) {
                     BestScoreIndex[2] = BestScoreIndex[1];
                     BestScoreIndex[1] = BestScoreIndex[0];
                     BestScoreIndex[0] = i;
-                } else if ((score[BestScoreIndex[1]] / 100.0) < (score[i] / 100.0)) {
+                } else if ((score[BestScoreIndex[1]] ) < (score[i] )) {
                     BestScoreIndex[2] = BestScoreIndex[1];
                     BestScoreIndex[1] = i;
-                } else if ((score[BestScoreIndex[2]] / 100.0) < (score[i] / 100.0)) {
+                } else if ((score[BestScoreIndex[2]] ) < (score[i] )) {
                     BestScoreIndex[2] = i;
                 }
             }

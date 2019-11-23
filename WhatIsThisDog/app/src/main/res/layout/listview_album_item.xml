@@ -30,7 +30,7 @@
             android:id="@+id/albumDogImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_roundsolid_white"
+            android:background="@drawable/bg_roundsolid_trans"
             app:srcCompat="@color/tabTextDefault" />
 
         <LinearLayout

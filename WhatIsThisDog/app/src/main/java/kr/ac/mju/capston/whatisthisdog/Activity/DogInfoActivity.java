@@ -3,6 +3,7 @@ package kr.ac.mju.capston.whatisthisdog.Activity;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;

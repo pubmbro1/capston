@@ -130,7 +130,7 @@ public class ListViewAdapter extends BaseAdapter {
                     .load(resId)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .centerCrop()
+                    .fitCenter()
                     .into(viewHolder.iconImageView);
 
             convertView.setTag(viewHolder);

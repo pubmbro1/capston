@@ -39,7 +39,7 @@ public class DogInfo implements Serializable {
         this.matchRate = array[7];
 
         SharedPreferences pref = context.getSharedPreferences("category", MODE_PRIVATE);
-        retMatch = String.valueOf(pref.getInt( matchRate, 00) / 100.0);
+        retMatch = String.valueOf(pref.getInt( matchRate, 00));
     }
 
     public String getDogImage() {
@@ -108,21 +108,5 @@ public class DogInfo implements Serializable {
 
     public void setMatchRate(String matchRate) {
         this.matchRate = matchRate;
-    }
-
-    //임시데이터 생성
-    public static String getRandomData(String image){
-        long time = System.currentTimeMillis();
-
-        String result = image;
-        result += ("#" + "TEST DOG " + String.valueOf(time%10) );
-        result += ("#" + "lifeSpan" + String.valueOf(time%10) );
-        result += ("#" + "weight" + String.valueOf(time%10) );
-        result += ("#" + "size" + String.valueOf(time%10) );
-        result += ("#" + "tendency" + String.valueOf(time%10) );
-        result += ("#" + "desc" + String.valueOf(time));
-        result += ("#" +  String.valueOf(time%100));
-
-        return result;
     }
 }

@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/softMainColor"
     android:gravity="center|top"
     android:orientation="vertical"
     android:weightSum="10"
@@ -23,7 +22,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="250dp">
 
                 <ImageButton
                     android:id="@+id/b_info_back"
@@ -59,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_weight="1"
-                android:background="@drawable/bg_roundborder_puppybrown_shadow"
+                android:background="@drawable/bg_roundsolid_soft_shadow"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:paddingLeft="30dp"
@@ -131,6 +130,7 @@
                     android:id="@+id/info_tendency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/bg_roundsolid_maincolor"
                     android:text="tendency"
                     android:textColor="@color/mainTextColor"
                     android:textSize="18sp" />
@@ -149,9 +149,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
+                android:background="@drawable/bg_roundsolid_white"
                 android:gravity="center|top"
                 android:minHeight="200dp"
                 android:orientation="vertical"
+                android:padding="20dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingBottom="20dp">
@@ -163,6 +165,7 @@
                     android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
                     android:gravity="center_horizontal|left"
+                    android:lineSpacingExtra="5sp"
                     android:text="physical"
                     android:textColor="@color/mainTextColor" />
 
@@ -172,6 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
+                    android:lineSpacingExtra="5sp"
                     android:text="desc"
                     android:textColor="@color/mainTextColor" />
 
