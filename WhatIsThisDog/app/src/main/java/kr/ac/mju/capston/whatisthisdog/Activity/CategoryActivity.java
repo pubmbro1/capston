@@ -3,7 +3,6 @@ package kr.ac.mju.capston.whatisthisdog.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
@@ -61,6 +60,8 @@ public class CategoryActivity extends BaseActivity {
         editor.putBoolean("init", true);
         for(int i=0;i<catSize;i++)
             editor.putInt(("category" + String.valueOf(i)), DEFAULT_VALUE);
+        for(int i=0;i<120;i++)
+            editor.putInt(("score"+String.valueOf(i)), DEFAULT_VALUE);
         editor.commit();
     }
 
@@ -82,7 +83,6 @@ public class CategoryActivity extends BaseActivity {
 
     private void saveCategory(){
         SharedPreferences.Editor editor = pref.edit();
-        SharedPreferences.Editor editor_ = pref.edit();
 
         int[] catValues = new int[catSize];
         for(int i=0;i<catSize;i++){
@@ -101,11 +101,11 @@ public class CategoryActivity extends BaseActivity {
 
             // 사용자 점수 읽기 => 위에서 수행
             // 알고리즘 생성
-            double prefSim = 0, bias = 0;
-            int gap = 0;
+            double prefSim = 0, gap = 0, bias;
             for(int j=0;j<catSize;j++){
+                bias = 0;
                 if(reverse_score[j]){
-                    gap = (6-catValues[j]) - Integer.parseInt(score[j]);
+                    gap = (catSize-catValues[j]) - Integer.parseInt(score[j]);
                     if(gap > 0)
                         bias = 0.13*gap;
                     else if(gap < 0)
@@ -118,15 +118,13 @@ public class CategoryActivity extends BaseActivity {
                     else if(gap < 0)
                         bias = 0.13*(-gap);
                 }
-                prefSim += 1 - bias;
-                // ex) 0.1234 => 1234로 저장 => 이후 사용시 /100하여 12.34(%)로 사용
-                // SharedPreferences에 저장
-                editor_.putInt(("score" + String.valueOf(i)), (int)(((prefSim/6)*10000)));
-                Log.d("score not saved : ", Double.toString((int)((prefSim/6)*10000)));
+                prefSim += (1 - bias);
             }
+            // ex) 0.1234 => 1234로 저장 => 이후 사용시 /100.0하여 12.34(%)로 사용
+            // SharedPreferences에 저장
+            editor.putInt(("score" + String.valueOf(i)), ((int)(prefSim/6*10000)));
         }
         editor.commit();
-        editor_.commit();
     }
 
 }
