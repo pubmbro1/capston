@@ -80,7 +80,7 @@ public class DogInfoActivity extends BaseActivity {
                     .load(resId)
                     .placeholder(R.drawable.test_puppy_icon)
                     .error(R.drawable.icon_sadpuppy)
-                    .centerCrop()
+                    .fitCenter()
                     .into(imageView);
         }
         else if(called.equals("camera")){ //카메라 액티비티에서 보낸 경우 (수정 필요)
@@ -96,7 +96,7 @@ public class DogInfoActivity extends BaseActivity {
         name.setText(item.getName());
         matchRate.setText(item.getMatchRate() + "%");
         tendency.setText(item.getTendency());
-        physical.setText("수명 : " + item.getlifeSpan() + " / 무게 : " + item.getWeight() + " / 크기 : " + item.getSize());
+        physical.setText("수명 : " + item.getlifeSpan() + "\n체중 : " + item.getWeight() + "\n크기 : " + item.getSize());
         desc.setText(item.getDesc());
 
         back.bringToFront();

@@ -75,7 +75,8 @@
                     android:layout_marginBottom="10dp"
                     android:text="TEST DOG NAME"
                     android:textColor="@color/mainTextColor"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -91,7 +92,8 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text="당신의 성향과 "
-                        android:textColor="@color/mainTextColor" />
+                        android:textColor="@color/mainTextColor"
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/info_matchrate"
@@ -103,7 +105,7 @@
                         android:padding="5dp"
                         android:text="98%"
                         android:textColor="@android:color/white"
-                        android:textSize="18sp" />
+                        android:textSize="22sp" />
 
                     <TextView
                         android:id="@+id/textView3"
@@ -112,7 +114,8 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:text=" 일치해요!"
-                        android:textColor="@color/mainTextColor" />
+                        android:textColor="@color/mainTextColor"
+                        android:textSize="18sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -129,7 +132,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="tendency"
-                    android:textColor="@color/mainTextColor" />
+                    android:textColor="@color/mainTextColor"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -158,6 +162,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginBottom="20dp"
+                    android:gravity="center_horizontal|left"
                     android:text="physical"
                     android:textColor="@color/mainTextColor" />
 
@@ -166,6 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:gravity="center"
                     android:text="desc"
                     android:textColor="@color/mainTextColor" />
 

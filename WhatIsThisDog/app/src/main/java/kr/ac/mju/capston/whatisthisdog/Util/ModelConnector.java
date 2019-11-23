@@ -39,7 +39,6 @@ public class ModelConnector {
                 index = i;
             }
         }
-        index++;
 
         return "dog" + index;
     }
