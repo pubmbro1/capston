@@ -95,6 +95,7 @@ public class FileManager {
                 bufrd = new BufferedReader(fr) ;
 
                 while ((str = bufrd.readLine()) != null) {
+                    Log.d("loadfile", str);
                     //리스트에 추가
                     resultList.add(new DogInfo(str, context) );
                 }

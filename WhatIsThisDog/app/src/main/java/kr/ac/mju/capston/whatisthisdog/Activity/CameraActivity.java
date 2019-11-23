@@ -51,7 +51,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         super.onCreate(savedInstanceState);
         initActionBar(false);
         init();
@@ -96,7 +95,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         mCameraView = findViewById(R.id.surfaceView);
 
         mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_BACK);
-        mCamera.setDisplayOrientation(0);
+        mCamera.setDisplayOrientation(90);
 
 
         mCameraHolder = mCameraView.getHolder();

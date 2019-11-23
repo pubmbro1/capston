@@ -19,6 +19,8 @@ public class DogInfo implements Serializable {
     private String desc; //상세정보
     private String matchRate; //일치율
 
+    private String retMatch;
+
     private String saveData;
 
     public DogInfo(String saveData, Context context){
@@ -34,12 +36,10 @@ public class DogInfo implements Serializable {
         this.size = array[4];
         this.tendency = array[5];
         this.desc = array[6];
+        this.matchRate = array[7];
 
         SharedPreferences pref = context.getSharedPreferences("category", MODE_PRIVATE);
-        String key = String.valueOf(Integer.parseInt(dogImage.replace("dog", "")) - 1);
-        key = "score" + key;
-
-        this.matchRate = String.valueOf(pref.getInt(key, 00) / 100.0);
+        retMatch = String.valueOf(pref.getInt( matchRate, 00) / 100.0);
     }
 
     public String getDogImage() {
@@ -102,7 +102,8 @@ public class DogInfo implements Serializable {
     }
 
     public String getMatchRate() {
-        return matchRate;
+
+        return retMatch;
     }
 
     public void setMatchRate(String matchRate) {
