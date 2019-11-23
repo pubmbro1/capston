@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.hardware.Camera;
 import android.net.Uri;
@@ -109,6 +110,7 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
 
         Animation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(500);
+
         anim.setStartOffset(20);
         anim.setRepeatMode(Animation.REVERSE);
         anim.setRepeatCount(Animation.INFINITE);
@@ -188,7 +190,10 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         Bitmap bitmap = BitmapFactory.decodeByteArray( data, 0, data.length, options);
 
 
-        bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, null, true);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(90);
+
+        bitmap =  Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
 
         //bitmap 을  byte array 로 변환
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
