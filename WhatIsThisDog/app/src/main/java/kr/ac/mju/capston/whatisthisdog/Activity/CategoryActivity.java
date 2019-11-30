@@ -85,6 +85,8 @@ public class CategoryActivity extends BaseActivity {
         SharedPreferences.Editor editor = pref.edit();
 
         int[] catValues = new int[catSize];
+        double[] prefSims = new double[120];
+
         for(int i=0;i<catSize;i++){
             int seekBarID = getResources().getIdentifier( "seekBar" + String.valueOf(i), "id", getPackageName());
             seekBar = findViewById(seekBarID);
@@ -122,7 +124,25 @@ public class CategoryActivity extends BaseActivity {
             }
             // ex) 0.1234 => 1234로 저장 => 이후 사용시 /100.0하여 12.34(%)로 사용
             // SharedPreferences에 저장
-            editor.putInt(("score" + String.valueOf(i)), ((int)(prefSim/6*10000)));
+            prefSims[i] = ((int)(prefSim/6*100));
+            //editor.putInt(("score" + String.valueOf(i)), ((int)(prefSim/6*10000)));
+        }
+
+        //minmax_scaler
+        //get min/max
+        int min = 100, max = 0;
+        for(int i=0;i<120;i++){
+            if(prefSims[i] > max)
+                max = prefSims[i];
+            if(prefSims[i] < min)
+                min = prefSims[i];
+        }
+        
+        //rescale
+        for(int i=0;i<120;i++){
+            prefSims[i] = (int)(prefSims[i] - min) / ((max*0.8 + 100*0.2) - min);
+            Log.v("sim",prefSims[i]);
+            editor.putInt(("score" + String.valueOf(i)), prefSims[i]);
         }
         editor.commit();
     }
