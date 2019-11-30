@@ -126,7 +126,7 @@ public class CategoryActivity extends BaseActivity {
             }
             // ex) 0.1234 => 1234로 저장 => 이후 사용시 /100.0하여 12.34(%)로 사용
             // SharedPreferences에 저장
-            prefSims[i] = (int)(prefSim/6*10000) / 100;
+            prefSims[i] = (int)(prefSim/6*100);
         }
         //minmax_scaler
         //get min/max

@@ -60,9 +60,21 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mCamera != null) {
-                    mCamera.takePicture(null, null, takePicture);
-                }
+                mCamera.autoFocus(new Camera.AutoFocusCallback() {
+                    public void onAutoFocus(boolean success, Camera camera) {
+                        if (success) {
+                            Toast.makeText(getApplicationContext(), "Auto Focus Success", Toast.LENGTH_SHORT).show();
+                            if(mCamera != null) {
+                                mCamera.takePicture(null, null, takePicture);
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Auto Focus Failed", Toast.LENGTH_SHORT).show();
+                            if(mCamera != null) {
+                                mCamera.takePicture(null, null, takePicture);
+                            }
+                        }
+                    }
+                });
             }
         });
 
@@ -152,7 +164,6 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         getWindowManager().getDefaultDisplay().getSize(point);
         Camera.Size size = getOptimalPreviewSize(parameters.getSupportedPreviewSizes(), point.x ,point.y);
         parameters.setPreviewSize(size.width, size.height);
-
 
         List<String> focusModes = parameters.getSupportedFocusModes();
         if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
