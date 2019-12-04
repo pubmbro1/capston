@@ -92,10 +92,12 @@ public class CategoryActivity extends BaseActivity {
             int seekBarID = getResources().getIdentifier( "seekBar" + String.valueOf(i), "id", getPackageName());
             seekBar = findViewById(seekBarID);
             editor.putInt(("category" + String.valueOf(i)), seekBar.getProgress()+1);
+            editor.commit();
 
             //사용자 점수 읽기
             catValues[i] = pref.getInt(("category" + String.valueOf(i)), DEFAULT_VALUE);
         }
+
 
 
         for(int i=0;i<120;i++){
@@ -111,7 +113,7 @@ public class CategoryActivity extends BaseActivity {
                 if(reverse_score[j]){
                     gap = (catSize-catValues[j]) - Integer.parseInt(score[j]);
                     if(gap > 0)
-                        bias = 0.13*gap;
+                        bias = 0;//0.13*gap;
                     else if(gap < 0)
                         bias = 0.25*(-gap);
                 }
@@ -120,7 +122,7 @@ public class CategoryActivity extends BaseActivity {
                     if(gap > 0)
                         bias = 0.25*gap;
                     else if(gap < 0)
-                        bias = 0.13*(-gap);
+                        bias = 0;//0.13*(-gap);
                 }
                 prefSim += (1 - bias);
             }

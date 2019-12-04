@@ -57,8 +57,15 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         init();
 
         button = findViewById(R.id.button);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View view) {
+                if(mCamera != null) {
+                    mCamera.takePicture(null, null, takePicture);
+                }
+            }
+            /*
             public void onClick(View view) {
                 mCamera.autoFocus(new Camera.AutoFocusCallback() {
                     public void onAutoFocus(boolean success, Camera camera) {
@@ -76,6 +83,8 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
                     }
                 });
             }
+
+             */
         });
 
         /*
@@ -165,10 +174,10 @@ public class CameraActivity extends BaseActivity implements SurfaceHolder.Callba
         Camera.Size size = getOptimalPreviewSize(parameters.getSupportedPreviewSizes(), point.x ,point.y);
         parameters.setPreviewSize(size.width, size.height);
 
-        List<String> focusModes = parameters.getSupportedFocusModes();
-        if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
-            parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
-        }
+        //List<String> focusModes = parameters.getSupportedFocusModes();
+        //if (focusModes.contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+            //parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        //}
         mCamera.setParameters(parameters);
 
         // View 재생성
