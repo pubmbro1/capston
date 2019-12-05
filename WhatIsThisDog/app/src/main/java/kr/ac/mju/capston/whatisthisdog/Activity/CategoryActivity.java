@@ -100,50 +100,28 @@ public class CategoryActivity extends BaseActivity {
 
 
 
-        for(int i=0;i<120;i++){
+        for(int i=0;i<120-3;i++){
             String scoreString = getString(getResources().getIdentifier( "score" + String.valueOf(i), "string", getPackageName()));
             String[] score = scoreString.split("#");
-            Boolean[] reverse_score = {false, true, false, false, true, true};
 
             // 사용자 점수 읽기 => 위에서 수행
             // 알고리즘 생성
             double prefSim = 0, gap, bias;
             for(int j=0;j<catSize;j++){
                 bias = 0;
-                if(reverse_score[j]){
-                    gap = (catSize-catValues[j]) - Integer.parseInt(score[j]);
-                    if(gap > 0)
-                        bias = 0;//0.13*gap;
-                    else if(gap < 0)
-                        bias = 0.25*(-gap);
-                }
-                else{
-                    gap = catValues[j] - Integer.parseInt(score[j]);
-                    if(gap > 0)
-                        bias = 0.25*gap;
-                    else if(gap < 0)
-                        bias = 0;//0.13*(-gap);
-                }
+                gap = catValues[j] - Integer.parseInt(score[j]);
+
+                if(gap > 0)
+                    bias = 0.25*gap;
+                else if(gap < 0)
+                    bias = 0.25*(-gap);
+
                 prefSim += (1 - bias);
             }
             // ex) 0.1234 => 1234로 저장 => 이후 사용시 /100.0하여 12.34(%)로 사용
             // SharedPreferences에 저장
             prefSims[i] = (int)(prefSim/6*100);
-        }
-        //minmax_scaler
-        //get min/max
-        double min = 100, max = 0;
-        for(int i=0;i<120-3;i++){
-            if(prefSims[i] > max)
-                max = prefSims[i];
-            if(prefSims[i] < min)
-                min = prefSims[i];
-        }
-
-        //rescale
-        for(int i=0;i<120-3;i++){
-            double scaled = (prefSims[i] - min) / ((max*0.8 + 100*0.2) - min);
-            editor.putInt(("score" + String.valueOf(i)), (int)(scaled*100));
+            editor.putInt(("score"+String.valueOf(i)),(int)prefSims[i]);
         }
         for(int i=120-3;i<120;i++){
             editor.putInt(("score" + String.valueOf(i)), 0);
